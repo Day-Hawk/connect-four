@@ -3,9 +3,7 @@ package fourwins.game;
 import fourwins.Controller;
 import fourwins.move.check.PendingMove;
 import fourwins.console.ConsoleText;
-import fourwins.exception.OutsideFieldException;
-import fourwins.game.GameResult;
-import fourwins.game.GameState;
+import fourwins.game.exception.OutsideFieldException;
 import fourwins.player.Token;
 
 import java.util.Arrays;

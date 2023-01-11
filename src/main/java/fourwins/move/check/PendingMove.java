@@ -1,7 +1,7 @@
 package fourwins.move.check;
 
 import fourwins.game.Round;
-import fourwins.exception.OutsideFieldException;
+import fourwins.game.exception.OutsideFieldException;
 import fourwins.player.Token;
 
 public class PendingMove {

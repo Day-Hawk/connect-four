@@ -4,6 +4,9 @@ package fourwins.game;
  * This enum can be used to express the result of a game.
  */
 public enum GameResult {
+  /**
+   * If the player has won.
+   */
   WON("""
 
     WWWWWWWW                           WWWWWWWW     OOOOOOOOO     NNNNNNNN        NNNNNNNN
@@ -23,7 +26,11 @@ public enum GameResult {
                W:::W           W:::W              OO:::::::::OO   N::::::N        N::::::N
                 WWW             WWW                 OOOOOOOOO     NNNNNNNN         NNNNNNN
 
-    """), //If the player has won.
+    """),
+
+  /**
+   * If the player has lost.
+   */
   LOST("""
 
     LLLLLLLLLLL                                                        tttt
@@ -43,7 +50,11 @@ public enum GameResult {
     L::::::::::::::::::::::L oo:::::::::::oo  s:::::::::::ss          tt:::::::::::tt
     LLLLLLLLLLLLLLLLLLLLLLLL   ooooooooooo     sssssssssss              ttttttttttt
 
-    """), //If the player has lost.
+    """),
+
+  /**
+   * If it is a draw.
+   */
   DRAW("""
 
     DDDDDDDDDDDDD
@@ -63,14 +74,28 @@ public enum GameResult {
     D::::::::::::DDD      r:::::r           a::::::::::aa:::a       w:::w           w:::w
     DDDDDDDDDDDDD         rrrrrrr            aaaaaaaaaa  aaaa        www             www
 
-    """); //If it is a draw
+    """);
 
+  /**
+   * This variable holds the string seen above.
+   * These can then be obtained through the method {@link GameResult#message()}.
+   */
   private final String message;
 
+  /**
+   * Fills the enum values with messages.
+   *
+   * @param message which is to be set for the respective value.
+   */
   GameResult(String message) {
     this.message = message;
   }
 
+  /**
+   * Returns the stored value of the variable {@link GameResult#message}.
+   *
+   * @return message of the type as a {@link String}.
+   */
   public String message() {
     return this.message;
   }
