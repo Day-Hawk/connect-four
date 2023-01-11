@@ -7,23 +7,17 @@ import fourwins.game.Round;
 /**
  *
  */
-public class Controller {
+public class GameEngine {
+  private static GameEngine instance;
 
-  private static Controller instance;
-
-  public static Controller instance() {
+  public static GameEngine instance() {
     return instance;
   }
 
-  public static void main(String[] args) {
-    new Controller().init();
-  }
-
-
+  private final ConsoleInput consoleInput;
   private Round round;
-  private ConsoleInput consoleInput;
 
-  protected Controller() {
+  protected GameEngine() {
     instance = this;
     this.consoleInput = new ConsoleInput(); //Create new consoleInput instance.
   }

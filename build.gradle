@@ -6,17 +6,17 @@ repositories {
   mavenCentral()
 }
 
-dependencies {
-  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-}
-
 jar {
   manifest {
-    attributes "Main-Class": "fourwins.Controller"
+    attributes "Main-Class": "fourwins.GameMain"
   }
   }
 
-  test {
-    useJUnitPlatform()
-  }
+dependencies {
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
+}
+
+test {
+  useJUnitPlatform()
+  testLogging.showStandardStreams(true)
+}

@@ -1,6 +1,6 @@
 package fourwins.game;
 
-import fourwins.Controller;
+import fourwins.GameEngine;
 import fourwins.controller.check.PendingMove;
 import fourwins.console.ConsoleText;
 import fourwins.game.exception.OutsideFieldException;
@@ -216,7 +216,7 @@ public final class Round {
 
     System.out.println(this.gameResult.message());
 
-    Controller.instance().reset();
+    GameEngine.instance().reset();
   }
 
   /**

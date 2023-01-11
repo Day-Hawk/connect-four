@@ -1,6 +1,6 @@
 package fourwins.controller;
 
-import fourwins.Controller;
+import fourwins.GameEngine;
 import fourwins.game.Round;
 import fourwins.player.Token;
 
@@ -18,7 +18,7 @@ public class PlayerController extends BaseController {
       int maxInput = this.round().columns();
       System.out.printf("Gebe eine zahl zwischen 1 und %d ein: ", maxInput);
 
-      int inputIntegerIndex = Controller.instance().consoleInput().awaitInteger(integer -> {
+      int inputIntegerIndex = GameEngine.instance().consoleInput().awaitInteger(integer -> {
         return integer > 0 && integer <= maxInput;
       }, "The entered number is outside the range. [input: %d]"::formatted);
 
