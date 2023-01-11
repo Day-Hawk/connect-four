@@ -1,9 +1,9 @@
 package fourwins.player;
 
 import fourwins.game.Round;
-import fourwins.move.BaseMove;
-import fourwins.move.ComMove;
-import fourwins.move.PlayerMove;
+import fourwins.controller.BaseController;
+import fourwins.controller.ComController;
+import fourwins.controller.PlayerController;
 
 /**
  * Distinguishes the tokens that are placed on the board.
@@ -12,12 +12,12 @@ public enum Token {
   /**
    * Player sitting between the screen and the chair.
    */
-  PLAYER('X', PlayerMove.class),
+  PLAYER('X', PlayerController.class),
 
   /**
    * Computer that must be beaten.
    */
-  COM('O', ComMove.class),
+  COM('O', ComController.class),
 
   /**
    * If no token is present at field.
@@ -32,7 +32,7 @@ public enum Token {
   /**
    * The class is needed to build the controller. For this variable, there is no getter.
    */
-  private final Class<? extends BaseMove> moveClass;
+  private final Class<? extends BaseController> moveClass;
 
   /**
    * Fill enum member with content.
@@ -40,7 +40,7 @@ public enum Token {
    * @param symbol    to use for token if displayed.
    * @param moveClass specifies the associated controller.
    */
-  Token(char symbol, Class<? extends BaseMove> moveClass) {
+  Token(char symbol, Class<? extends BaseController> moveClass) {
     this.symbol = symbol;
     this.moveClass = moveClass;
   }
@@ -59,12 +59,12 @@ public enum Token {
    * For the build {@link Token#moveClass} is used.
    *
    * @param round  passes the round for which the controller is to be created.
-   * @param <TYPE> generic type of the controller class  (Inherited from {@link BaseMove}).
-   * @return created {@link BaseMove} instance.
+   * @param <TYPE> generic type of the controller class  (Inherited from {@link BaseController}).
+   * @return created {@link BaseController} instance.
    * @throws NullPointerException If there is no class or an error occurs during the building process.
    */
   @SuppressWarnings("unchecked")
-  public <TYPE extends BaseMove> TYPE injectMove(final Round round) throws NullPointerException {
+  public <TYPE extends BaseController> TYPE injectMove(final Round round) throws NullPointerException {
     if (this.moveClass == null) { //Check if a class is set for the instance.
       throw new NullPointerException("There is no class that can be built.");
     }

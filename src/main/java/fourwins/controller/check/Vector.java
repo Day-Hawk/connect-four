@@ -1,7 +1,9 @@
-package fourwins.move.check;
+package fourwins.controller.check;
+
+import fourwins.utils.ObjectUtils;
 
 /**
- * This record contains a position or a direction of a move. (Two dimensional)
+ * This record contains a position or a direction of a move (Two dimensional).
  * This class does not contain all operations that can be applied to a vector.
  * Only the required functions are implemented here.
  *
@@ -23,9 +25,7 @@ public record Vector(int x,
    * @throws NullPointerException If the given vector is null.
    */
   public Vector add(final Vector vector) throws NullPointerException {
-    if (vector == null) { //Check if the given vector is null, if so throw error.
-      throw new NullPointerException("Given vector is null!");
-    }
+    ObjectUtils.throwIfNull(vector, "Vector is null."); //Checks the vector is not null.
     return new Vector(this.x + vector.x(), this.y + vector.y()); //Create new instance with the values described above.
   }
 

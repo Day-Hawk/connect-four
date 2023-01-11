@@ -87,7 +87,7 @@ public enum GameResult {
    *
    * @param message which is to be set for the respective value.
    */
-  GameResult(String message) {
+  GameResult(final String message) {
     this.message = message;
   }
 

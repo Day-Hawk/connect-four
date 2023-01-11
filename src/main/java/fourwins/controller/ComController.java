@@ -1,4 +1,4 @@
-package fourwins.move;
+package fourwins.controller;
 
 import fourwins.game.Round;
 import fourwins.player.Token;
@@ -6,9 +6,9 @@ import fourwins.player.Token;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class ComMove extends BaseMove {
+public class ComController extends BaseController {
 
-  public ComMove(final Round round) {
+  public ComController(final Round round) {
     super(round);
   }
 

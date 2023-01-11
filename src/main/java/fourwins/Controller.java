@@ -1,12 +1,8 @@
 package fourwins;
 
+import fourwins.console.ConsoleInput;
+import fourwins.console.Messages;
 import fourwins.game.Round;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 /**
  *
@@ -23,75 +19,61 @@ public class Controller {
     new Controller().init();
   }
 
-  private final Scanner scanner;
+
   private Round round;
+  private ConsoleInput consoleInput;
 
   protected Controller() {
-    this.scanner = new Scanner(System.in);
     instance = this;
+    this.consoleInput = new ConsoleInput(); //Create new consoleInput instance.
   }
 
   public void init() {
-    System.out.println("""
-       .----------------.  .----------------.  .----------------.  .----------------.  .-----------------. .----------------.
-      | .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
-      | |   _    _     | || |              | || | _____  _____ | || |     _____    | || | ____  _____  | || |    _______   | |
-      | |  | |  | |    | || |              | || ||_   _||_   _|| || |    |_   _|   | || ||_   \\|_   _| | || |   /  ___  |  | |
-      | |  | |__| |_   | || |    ______    | || |  | | /\\ | |  | || |      | |     | || |  |   \\ | |   | || |  |  (__ \\_|  | |
-      | |  |____   _|  | || |   |______|   | || |  | |/  \\| |  | || |      | |     | || |  | |\\ \\| |   | || |   '.___`-.   | |
-      | |      _| |_   | || |              | || |  |   /\\   |  | || |     _| |_    | || | _| |_\\   |_  | || |  |`\\____) |  | |
-      | |     |_____|  | || |              | || |  |__/  \\__|  | || |    |_____|   | || ||_____|\\____| | || |  |_______.'  | |
-      | |              | || |              | || |              | || |              | || |              | || |              | |
-      | '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
-       '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'
-       """);
-    System.out.println("Welcome to four wins.");
-    System.out.print("Is an explanation of the game required. (yes/no): ");
-    if (this.awaitBoolean(null)) {
+    System.out.println(Messages.LOGO); //Print logo.
+    System.out.println(Messages.WELCOME); //Print welcome message.
+    System.out.print(Messages.ASK_DESCRIPTION); //Print question for description.
+    if (this.consoleInput.awaitBoolean(null /*null means that both values are used.*/)) { //Wait for user input.
       this.explain();
       return;
     }
-    System.out.println("Ok, the game is now in setup. If an explanation is still needed, it must be restarted.");
-    this.setUp();
+    System.out.println(Messages.INIT_WARNING); //Print warning.
+    this.fieldSize();
   }
 
+  /**
+   * Gives the player the description of the game.
+   */
   public void explain() {
-    System.out.println("\n Fabio stinkt. \n");
-
-    System.out.print("Game understood? (yes): ");
-    if (this.awaitBoolean(null)) {
-      this.setUp();
+    System.out.println(Messages.DESCRIPTION); //Print description.
+    System.out.print(Messages.ASK_DESCRIPTION_UNDERSTOOD); //Print question, player understood.
+    if (this.consoleInput.awaitBoolean(null /*null means that both values are used.*/)) {
+      this.fieldSize(); //If player types 'true'.
     } else {
-      this.explain();
+      this.explain(); //If player types 'false'.
     }
   }
 
-  public void reset() {
-    System.out.print("Reset? (yes): ");
-    if (this.awaitBoolean(aBoolean -> aBoolean)) {
-      System.out.println("\n".repeat(5));
-      this.setUp();
-    }
-  }
-
-  public void setUp() {
-    this.round = null;
+  /**
+   * Requests the playing field size from the player.
+   */
+  public void fieldSize() {
+    this.round = null; //Deletes the current round.
     System.out.print("Should the standard field size be used ? (yes/no): ");
-    if (!this.awaitBoolean(null)) {
-      this.setUpField();
+    if (!this.consoleInput.awaitBoolean(null)) {
+      this.customField();
       return;
     }
     this.prepare(6, 7);
   }
 
-  public void setUpField() {
+  public void customField() {
     System.out.print("Enter the number of rows desired (int >= 4): ");
-    final int rows = this.awaitInteger(integer -> {
+    final int rows = this.consoleInput.awaitInteger(integer -> {
       return integer >= 4;
     }, "The number of rows must be greater than 4. [input %d]"::formatted);
 
     System.out.print("Enter the number of columns desired (int >= 4): ");
-    final int columns = this.awaitInteger(integer -> {
+    final int columns = this.consoleInput.awaitInteger(integer -> {
       return integer >= 4;
     }, "The number of columns must be greater than 4. [input %d]"::formatted);
 
@@ -104,75 +86,20 @@ public class Controller {
     System.out.printf("Round created with %d rows and %d columns.\n", rows, columns);
     System.out.print("Are you ready? (yes): ");
 
-    if (this.awaitBoolean(aBoolean -> aBoolean)) {
+    if (this.consoleInput.awaitBoolean(aBoolean -> aBoolean)) {
       this.round.init();
     }
-
   }
 
-  public <T> T await(final Predicate<String> testInput,
-                     final Function<String, T> mapFunction,
-                     final Predicate<T> testValue,
-                     final Function<T, String> message) {
-    while (true) {
-      final String textInput = this.scanner.next();
-
-      if (testInput != null && !testInput.test(textInput)) {
-        System.out.println("Invalid int input.");
-        continue;
-      }
-
-      if (mapFunction == null) {
-        System.out.println("No mapping function present, returns plain text.");
-        continue;
-      }
-
-      final T mappedObject = mapFunction.apply(textInput);
-
-      if (mappedObject == null) {
-        continue;
-      }
-
-      if (testValue != null && !testValue.test(mappedObject)) {
-        System.out.println(message == null ? "Invalid int input." : message.apply(mappedObject));
-        continue;
-      }
-
-      return mappedObject;
+  public void reset() {
+    System.out.print(Messages.ASK_RESET); //Ask for reset.
+    if (this.consoleInput.awaitBoolean(aBoolean -> aBoolean)) {
+      System.out.println("\n".repeat(5));
+      this.fieldSize();
     }
   }
 
-  public boolean awaitBoolean(final Predicate<Boolean> booleanPredicate) {
-    final Map<String, Boolean> valueMap = new HashMap<>() {
-      {
-        this.put("yes", true);
-        this.put("y", true);
-        this.put("true", true);
-        this.put("no", false);
-        this.put("n", false);
-        this.put("false", false);
-      }
-    };
-    return this.await(s -> valueMap.containsKey(s.toLowerCase()),
-      valueMap::get,
-      booleanPredicate == null ? aBoolean -> true : booleanPredicate,
-      null);
-  }
-
-  /**
-   * @param integerPredicate
-   * @param message
-   * @return
-   */
-  public Integer awaitInteger(final Predicate<Integer> integerPredicate,
-                              final Function<Integer, String> message) {
-    return this.await(s -> {
-      try {
-        Integer.parseInt(s);
-        return true;
-      } catch (final NumberFormatException ignore) {
-      }
-      return false;
-    }, Integer::parseInt, integerPredicate, message);
+  public ConsoleInput consoleInput() {
+    return this.consoleInput;
   }
 }
