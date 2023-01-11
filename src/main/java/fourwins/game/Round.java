@@ -21,14 +21,23 @@ public final class Round {
    */
   private final Token[][] pitch;
   /**
-   * This variable describes who is currently on the move.
+   * This variable describes who is currently on the move. More info: {@link Token}.
+   * Default: {@link Token#EMPTY}.
    */
   private Token currentMove;
+  /**
+   * The number of moves made by both sides combined.
+   */
   public int totalMoves;
   /**
-   *
+   * Current state of the game. More info: {@link GameState}.
+   * Default: {@link GameState#PREPARING}.
    */
   private GameState gameState;
+  /**
+   * Current result of the game. More info: {@link GameResult}.
+   * Default: {@link GameResult#DRAW}.
+   */
   private GameResult gameResult;
 
   /**
@@ -41,10 +50,10 @@ public final class Round {
   public Round(final int rows,
                final int columns) throws IllegalArgumentException {
     this.pitch = new Token[this.checkSizeValue(rows)][this.checkSizeValue(columns)]; //Create a two-dimensional array.
-    this.currentMove = Token.EMPTY;
-    this.totalMoves = 0;
-    this.gameState = GameState.PREPARING;
-    this.gameResult = GameResult.DRAW;
+    this.currentMove = Token.EMPTY; //Sets the default value to the variable.
+    this.totalMoves = 0; //Sets the start value.
+    this.gameState = GameState.PREPARING; //Sets the default value to the variable.
+    this.gameResult = GameResult.DRAW; //Sets the default value to the variable.
 
     for (int i = 0; i < this.rows() /*Max amount of rows in field.*/; i++) {
       Arrays.fill(this.pitch[i] /* Row */, Token.EMPTY); //Fill every row array with EMPTY tokens.
@@ -115,11 +124,12 @@ public final class Round {
   }
 
   /**
-   * Get the token that is on a certain field.
+   * Get the {@link Token} type of field.
    *
-   * @param rowIndex
-   * @param columnIndex
-   * @return
+   * @param rowIndex    of the row in which to search.
+   * @param columnIndex of the column in which to search.
+   * @return the value in the field. (token is null: illegal state, token is {@link Token#EMPTY} -> no owner.)
+   * @throws OutsideFieldException If one or both values are outside the field.
    */
   public Token tokenAt(final int rowIndex,
                        final int columnIndex) throws OutsideFieldException {
@@ -132,21 +142,26 @@ public final class Round {
     if (columnIndex < 0 || columnIndex > maxColumIndex) { //Check if given colum index is in bounds. 0 <= columnIndex < maxColumIndex. Throw error if outside bounds.
       throw new OutsideFieldException("Illegal colum. Max colum index is %d. [given: %d]".formatted(maxColumIndex, columnIndex));
     }
-    return this.pitch[rowIndex][columnIndex]; //Get token of field.
+    return this.pitch[rowIndex]/*Gets array in which the fields are*/ [columnIndex]; //Get token of field.
   }
 
   /**
-   * @param rowIndex
-   * @param columnIndex
-   * @return
+   * This method behaves similarly to {@link Round#tokenAt(int, int)}.
+   * This method works with {@link Optional}.
+   * If a field is not available, an error is generated at {@link Round#tokenAt(int, int)}.
+   * This method returns an {@link Optional#empty()} instead (Stands for null).
+   *
+   * @param rowIndex    of the row in which to search.
+   * @param columnIndex of the column in which to search.
+   * @return values of the field if available in {@link Optional}.
    */
   public Optional<Token> tokenAtOptional(final int rowIndex,
                                          final int columnIndex) {
     try {
-      return Optional.ofNullable(this.tokenAt(rowIndex, columnIndex));
+      return Optional.ofNullable(this.tokenAt(rowIndex, columnIndex)); //Wrap the value of the field in the optional.
     } catch (final OutsideFieldException ignore /*Exception could be ignored, response will be null.*/) {
     }
-    return Optional.empty();
+    return Optional.empty(); //Return an empty optional, since the field does not exist.
   }
 
   public PendingMove a(final Token token,
