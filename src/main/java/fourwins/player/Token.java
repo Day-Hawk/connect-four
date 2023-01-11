@@ -5,32 +5,44 @@ import fourwins.move.BaseMove;
 import fourwins.move.ComMove;
 import fourwins.move.PlayerMove;
 
-import java.lang.reflect.InvocationTargetException;
-
 /**
  * Distinguishes the tokens that are placed on the board.
  */
 public enum Token {
-  PLAYER('X', PlayerMove.class), //Player sitting between the screen and the chair.
-  COM('O', ComMove.class), //Computer that must be beaten.
-  EMPTY(' ', null); //If no token is present at field.
+  /**
+   * Player sitting between the screen and the chair.
+   */
+  PLAYER('X', PlayerMove.class),
+
+  /**
+   * Computer that must be beaten.
+   */
+  COM('O', ComMove.class),
+
+  /**
+   * If no token is present at field.
+   */
+  EMPTY(' ', null);
 
   /**
    * Char to use if token displayed.
+   * These can then be obtained through the method {@link Token#symbol()}.
    */
   private final char symbol;
-
-  private final Class<? extends BaseMove> moveClas;
+  /**
+   * The class is needed to build the controller. For this variable, there is no getter.
+   */
+  private final Class<? extends BaseMove> moveClass;
 
   /**
    * Fill enum member with content.
    *
-   * @param symbol   to use for token if displayed.
-   * @param moveClas
+   * @param symbol    to use for token if displayed.
+   * @param moveClass specifies the associated controller.
    */
-  Token(char symbol, Class<? extends BaseMove> moveClas) {
+  Token(char symbol, Class<? extends BaseMove> moveClass) {
     this.symbol = symbol;
-    this.moveClas = moveClas;
+    this.moveClass = moveClass;
   }
 
   /**
@@ -42,22 +54,39 @@ public enum Token {
     return symbol;
   }
 
-  public <T extends BaseMove> T injectMove(final Round round) {
+  /**
+   * Create a character controller from the locally given class.
+   * For the build {@link Token#moveClass} is used.
+   *
+   * @param round  passes the round for which the controller is to be created.
+   * @param <TYPE> generic type of the controller class  (Inherited from {@link BaseMove}).
+   * @return created {@link BaseMove} instance.
+   * @throws NullPointerException If there is no class or an error occurs during the building process.
+   */
+  @SuppressWarnings("unchecked")
+  public <TYPE extends BaseMove> TYPE injectMove(final Round round) throws NullPointerException {
+    if (this.moveClass == null) { //Check if a class is set for the instance.
+      throw new NullPointerException("There is no class that can be built.");
+    }
     try {
-      return (T) this.moveClas.getConstructor(Round.class).newInstance(round);
-    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-      throw new RuntimeException(e);
+      return (TYPE /*Format the created instance to the specified type.*/) this.moveClass
+        .getConstructor(Round.class) //Get the constructor of the specified class, which contains only the round as a passing value.
+        .newInstance(round); //Build a new instance of the class with the round specified.
+    } catch (final Exception exception /*Collected errors: method not found, invoke and cast.*/) {
+      throw new NullPointerException("An error occurred while building the class.");
     }
   }
 
   /**
-   * @return
+   * Simple method to rotate the token.
+   *
+   * @return new token (other side of the previous token).
    */
   public Token flipToken() {
-    return switch (this) {
-      case PLAYER -> COM;
-      case COM -> PLAYER;
-      case EMPTY -> EMPTY;
+    return switch (this /*instance type of the enum*/) { //Go through all possible token types.
+      case PLAYER -> COM; //Player turns into computer.
+      case COM -> PLAYER; //Computer turns into player.
+      case EMPTY -> EMPTY; //Empty token remains empty.
     };
   }
 }

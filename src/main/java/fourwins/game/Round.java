@@ -60,6 +60,9 @@ public final class Round {
     }
   }
 
+  /**
+   * Initialize the round.
+   */
   public void init() {
     System.out.println("Initialisiere runde");
     this.currentMove = ThreadLocalRandom.current().nextDouble(.99)  /*Generate random to see who starts.*/ < 0.5 ?
@@ -68,27 +71,27 @@ public final class Round {
 
     System.out.format("%s startet. \n", this.currentMove.name());
 
-    new ConsoleText().printPitch(this);
-    this.gameState = GameState.RUNNING;
+    new ConsoleText().printPitch(this); //Prints an empty pitch into the console.
+    this.gameState = GameState.RUNNING; //Changes the status of preparing to running.
 
-    while (this.gameState == GameState.RUNNING) {
-      if (this.totalMoves >= this.rows() * this.columns()) {
-        this.end(null);
+    while (this.gameState == GameState.RUNNING) { //Round runs as long as the game is set to running.
+      if (this.totalMoves >= this.rows() * this.columns()/* Comparison value are the maximum moves -> number of fields.*/) {
+        this.end(null /*null means draw*/); //Finishes the game as draw.
         return;
       }
-      int value = this.currentMove.injectMove(this).awaitColumn();
 
-      final PendingMove pendingMove = this.a(this.currentMove, value);
+      final int columnIndex = this.currentMove.injectMove(this) //Create a controller from the active turn.
+        .awaitColumn(); //This method interrupts the thread until a column is specified.
+      final PendingMove pendingMove = this.a(this.currentMove, columnIndex); //Perform the move. More info about the class.
 
-      if (pendingMove.checkAll()) {
-        this.end(this.currentMove);
+      if (pendingMove.checkAll()) { //The move is checked.
+        this.end(this.currentMove); //If the check is true, the game is over and the current player/bot has won.
       }
 
-      this.currentMove = this.currentMove.flipToken();
-      new ConsoleText().printPitch(this);
-      this.totalMoves++;
+      this.currentMove = this.currentMove.flipToken(); //Transfers the active token to the other participant.
+      new ConsoleText().printPitch(this); //Print the new field in the console.
+      this.totalMoves++; //Increment moves.
     }
-
   }
 
   /**
