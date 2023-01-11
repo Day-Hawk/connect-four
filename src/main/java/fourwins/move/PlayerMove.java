@@ -1,7 +1,7 @@
 package fourwins.move;
 
 import fourwins.Controller;
-import fourwins.Round;
+import fourwins.game.Round;
 import fourwins.player.Token;
 
 public class PlayerMove extends BaseMove {

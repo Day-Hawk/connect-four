@@ -1,7 +1,6 @@
-package fourwins.check;
+package fourwins.move.check;
 
-import fourwins.Round;
-import fourwins.Vector;
+import fourwins.game.Round;
 import fourwins.exception.OutsideFieldException;
 import fourwins.player.Token;
 

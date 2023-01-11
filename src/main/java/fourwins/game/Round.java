@@ -1,6 +1,7 @@
-package fourwins;
+package fourwins.game;
 
-import fourwins.check.PendingMove;
+import fourwins.Controller;
+import fourwins.move.check.PendingMove;
 import fourwins.console.ConsoleText;
 import fourwins.exception.OutsideFieldException;
 import fourwins.game.GameResult;

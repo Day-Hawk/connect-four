@@ -1,10 +1,8 @@
 package fourwins.move;
 
-import fourwins.Round;
+import fourwins.game.Round;
 import fourwins.player.Token;
 
-import java.util.HashSet;
-import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 

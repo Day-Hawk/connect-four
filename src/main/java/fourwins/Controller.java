@@ -1,5 +1,7 @@
 package fourwins;
 
+import fourwins.game.Round;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;

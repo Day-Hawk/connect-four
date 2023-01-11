@@ -1,11 +1,10 @@
 package fourwins.player;
 
-import fourwins.Round;
+import fourwins.game.Round;
 import fourwins.move.BaseMove;
 import fourwins.move.ComMove;
 import fourwins.move.PlayerMove;
 
-import javax.annotation.processing.SupportedAnnotationTypes;
 import java.lang.reflect.InvocationTargetException;
 
 /**

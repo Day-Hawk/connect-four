@@ -1,6 +1,6 @@
 package fourwins.move;
 
-import fourwins.Round;
+import fourwins.game.Round;
 import fourwins.player.Token;
 
 public abstract class BaseMove {
