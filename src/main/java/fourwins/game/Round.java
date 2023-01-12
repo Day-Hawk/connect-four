@@ -7,6 +7,7 @@ import fourwins.console.ConsoleText;
 import fourwins.controller.check.VectorLine;
 import fourwins.game.exception.OutsideFieldException;
 import fourwins.player.Token;
+import fourwins.utils.ObjectUtils;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -22,6 +23,7 @@ public final class Round {
   /**
    * This variable describes who is currently on the move. More info: {@link Token}.
    * Default: {@link Token#EMPTY}.
+   * These can then be obtained through the method {@link Round#currentMove()}.
    */
   private Token currentMove;
   /**
@@ -38,7 +40,10 @@ public final class Round {
    * Default: {@link GameResult#DRAW}.
    */
   private GameResult gameResult;
-
+  /**
+   * Stores all available lines of pitch for COM player.
+   * These can then be obtained through the method {@link Round#comLines()}.
+   */
   private final Set<VectorLine> comLines;
 
   /**
@@ -63,7 +68,7 @@ public final class Round {
   }
 
   /**
-   * Initialize the round.
+   * Initialize and manage the game.
    */
   public void init() {
     System.out.println(Messages.ROUND_CREATE); //Print round create message.
@@ -77,17 +82,17 @@ public final class Round {
     while (this.gameState == GameState.RUNNING) { //Round runs as long as the game is set to running.
       if (this.totalMoves >= this.rows() * this.columns()/* Comparison value are the maximum moves -> number of fields.*/) {
         this.end(null /*null means draw*/); //Finishes the game as draw.
-        return;
+        return; //Return because game is over -> no more moves to make. [Pitch is full.]
       }
 
       final int columnIndex = this.currentMove.injectMove(this) //Create a controller from the active turn.
         .awaitColumn(); //This method interrupts the thread until a column is specified.
-      final MoveChecker pendingMove = this.a(this.currentMove, columnIndex); //Perform the move. More info about the class.
+      final MoveChecker pendingMove = this.move(this.currentMove, columnIndex); //Perform the move. More info about the class.
 
       if (pendingMove.checkAll(vectors -> System.out.println(vectors))) { //The move is checked.
         new ConsoleText().printPitch(this); //Print the new field in the console.
         this.end(this.currentMove); //If the check is true, the game is over and the current player/bot has won.
-        return;
+        return; //Return because game is over.
       }
 
       this.currentMove = this.currentMove.flipToken(); //Transfers the active token to the other participant.
@@ -125,10 +130,20 @@ public final class Round {
     return this.pitch[0].length;
   }
 
+  /**
+   * Get the current {@link Token} of variable {@link Round#currentMove}.
+   *
+   * @return reference stored in variable {@link Round#currentMove}.
+   */
   public Token currentMove() {
     return this.currentMove;
   }
 
+  /**
+   * Get
+   *
+   * @return
+   */
   public Set<VectorLine> comLines() {
     return this.comLines;
   }
@@ -164,7 +179,7 @@ public final class Round {
    * @param rowIndex    of the row in which to search.
    * @param columnIndex of the column in which to search.
    * @return the value in the field. (token is null: illegal state, token is {@link Token#EMPTY} -> no owner.)
-   * @throws OutsideFieldException If one or both values are outside the field.
+   * @throws OutsideFieldException if one or both values are outside the field.
    */
   public Token tokenAt(final int rowIndex,
                        final int columnIndex) throws OutsideFieldException {
@@ -191,8 +206,19 @@ public final class Round {
     return Optional.empty(); //Return an empty optional, since the field does not exist.
   }
 
-  public MoveChecker a(final Token token,
-                       final int columnIndex) {
+  /**
+   * Create a MoveChecker instance from parameters.
+   * The token is entered into the field, but the move is not checked directly.
+   *
+   * @param token       to be entered in the field.
+   * @param columnIndex column into which the token is inserted.
+   * @return created {@link MoveChecker} instance.
+   * @throws NullPointerException if token is null.
+   */
+  public MoveChecker move(final Token token,
+                          final int columnIndex) throws NullPointerException {
+    ObjectUtils.throwIfNull(token, "Given token is null."); //Checks if token is not null.
+
     int rowIndex = -1; //Stores the selected row -> row also used as topArray.
     Token[] topArray = null; //This variable will hold the row on top of the column.
     for (int i = this.rows(); i > 0; i--) { //Reverse loop through the rows of the pitch. (-> From bottom to top)
@@ -208,50 +234,79 @@ public final class Round {
       throw new NullPointerException("Column overflow.");
     }
 
-    topArray[columnIndex] = token;
+    topArray[columnIndex] = token; //Set token on field.
     return new MoveChecker(this, token, rowIndex, columnIndex);
   }
 
-  public boolean b(final int columnIndex) {
-    for (int i = this.rows(); i > 0; i--) { //Reverse loop through the rows of the pitch. (-> From bottom to top)
-      if (this.pitch[i - 1][columnIndex] != Token.EMPTY) { //Check if field at row with the given column is unused.
-        continue; //Go to next row.
+  /**
+   * Checks whether a column still has a free space to make a move.
+   *
+   * @param columnIndex to be checked.
+   * @return true, if column has at least 1 free space.
+   */
+  public boolean columnHasSpace(final int columnIndex) {
+    try {
+      this.validateColumnIndex(columnIndex);
+      for (int i = this.rows(); i > 0; i--) { //Reverse loop through the rows of the pitch. (-> From bottom to top)
+        if (this.pitch[i - 1][columnIndex] != Token.EMPTY) { //Check if field at row with the given column is unused.
+          continue; //Go to next row.
+        }
+        return true; //Token is EMPTY -> true.
       }
-      return true;
+    } catch (final OutsideFieldException ignore /*Exception could be ignored -> if thrown return value is false.*/) {
     }
     return false;
   }
 
-  public int c(final int columnIndex) throws OutsideFieldException {
+  /**
+   * The next free space in the column is displayed.
+   * Similar to {@link Round#columnHasSpace(int)}, but this method returns the column.
+   *
+   * @param columnIndex to be checked.
+   * @return index of row with free field.
+   * @throws OutsideFieldException if columnIndex is outside the field.
+   */
+  public int columnNext(final int columnIndex) throws OutsideFieldException {
     this.validateColumnIndex(columnIndex);
-    for (int i = this.rows() - 1; i >= 0; i--) { //Reverse loop through the rows of the pitch. (-> From bottom to top)
-      if (this.pitch[i][columnIndex] != Token.EMPTY) { //Check if field at row with the given column is unused.
+    for (int row = this.rows() - 1; row >= 0; row--) { //Reverse loop through the rows of the pitch. (-> From bottom to top)
+      if (this.pitch[row][columnIndex] != Token.EMPTY) { //Check if field at row with the given column is unused.
         continue; //Go to next row.
       }
-      return i;
+      return row; //Row with free field at columnIndex.
     }
     return -1;
   }
 
+  /**
+   * A {@link Set} with all free columns.
+   * Function checks for each column: {@link Round#columnHasSpace(int)}
+   * -> if this is true, the column is included in the list.
+   *
+   * @return list with free columns. If {@link Set} is empty -> game is over.
+   */
   public Set<Integer> availableColumns() {
-    final Set<Integer> availableColumns = new HashSet<>();
-
-    for (int i = 0; i < this.columns(); i++) {
-      if (this.b(i)) {
-        availableColumns.add(i);
+    final Set<Integer> availableColumns = new HashSet<>(); //Create new set instance.
+    for (int column = 0; column < this.columns(); column++) { //Loop trough every column of pitch.
+      if (this.columnHasSpace(column)) { //Check if column has free space. If true ->
+        availableColumns.add(column); //Add column int to set.
       }
     }
-
-    return availableColumns;
+    return availableColumns; //Return set.
   }
 
+  /**
+   * End this round.
+   *
+   * @param token could be null.
+   */
   public void end(Token token) {
-    this.gameState = GameState.END;
-    this.gameResult = token == null ? GameResult.DRAW : token == Token.PLAYER ? GameResult.WON : GameResult.LOST;
+    this.gameState = GameState.END; //Set state as end.
+    this.gameResult = token == null ? GameResult.DRAW /*If given token is null.*/ :
+      token == Token.PLAYER /*Runs if token is present*/ ? GameResult.WON /*Token is player*/ :
+        GameResult.LOST /*Token is com*/;
 
-    System.out.println(this.gameResult.message());
-
-    GameEngine.instance().reset();
+    System.out.println(this.gameResult.message()); //Print fancy screen of GameResult.
+    GameEngine.instance().reset(); //Go to reset -> start next game.
   }
 
   /**

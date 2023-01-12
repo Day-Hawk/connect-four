@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests for {@link fourwins.controller.check.Vector}.
  */
-public class VectorTest {
+public final class VectorTest {
   /**
    * Test constructor and getter.
    */

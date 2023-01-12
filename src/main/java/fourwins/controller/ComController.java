@@ -19,9 +19,8 @@ public class ComController extends BaseController {
   @Override
   public int awaitColumn() {
     try {
-      Thread.sleep(500L);
-    } catch (InterruptedException e) {
-      throw new RuntimeException(e);
+      Thread.sleep(500L); //Wait before returning, otherwise it feels like you're just playing against yourself.
+    } catch (final InterruptedException exception /*Ignore error as it is irrelevant.*/) {
     }
 
     return this.round()
@@ -88,7 +87,7 @@ public class ComController extends BaseController {
     try {
       return this.round().tokenAtOptional(vector.y(), vector.x())
         .filter(token -> token == Token.EMPTY)
-        .isPresent() && this.round().c(vector.x()) == vector.y();
+        .isPresent() && this.round().columnNext(vector.x()) == vector.y();
     } catch (final OutsideFieldException ignore) {
     }
     return false;

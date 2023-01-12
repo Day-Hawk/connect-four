@@ -1,39 +1,57 @@
 package fourwins.controller;
 
 import fourwins.GameEngine;
+import fourwins.console.Messages;
 import fourwins.game.Round;
 import fourwins.player.Token;
 
+/**
+ * Class which serves as a controller of the player.
+ * This class asks for the field and processes the answer and returns a valid answer at the end.
+ */
 public class PlayerController extends BaseController {
-
+  /**
+   * Construct a class.
+   *
+   * @param round for which the controller is created.
+   */
   public PlayerController(final Round round) {
     super(round);
   }
 
+  /**
+   * Waits for player input. When the player has made an input, it is processed, filtered and prepared.
+   *
+   * @return returns the selected position (column) in which the move is to be made.
+   */
   @Override
   public int awaitColumn() {
-    int column = -1;
+    int column = -1; //Define new variable with value -1 -> Undefined.
 
-    while (column < 0) {
-      int maxInput = this.round().columns();
-      System.out.printf("Gebe eine zahl zwischen 1 und %d ein: ", maxInput);
+    while (column < 0) { //Runs until a valid index is given.
+      int maxInput = this.round().columns(); //Stores the maximal available column.
+      System.out.printf(Messages.ASK_PLAYER_CONTROLLER_INPUT, maxInput); //Send question
 
-      int inputIntegerIndex = GameEngine.instance().consoleInput().awaitInteger(integer -> {
-        return integer > 0 && integer <= maxInput;
-      }, "The entered number is outside the range. [input: %d]"::formatted);
+      int inputIntegerIndex = GameEngine.instance().consoleInput() //Store input in variable.
+        .awaitInteger(integer -> integer > 0 && integer <= maxInput /*Check if given integer is in range. 0 <= INPUT < maxInput*/,
+          Messages.PLAYER_CONTROLLER_INPUT_RANGE::formatted /*Send player error message*/);
 
-      if (!this.round().b(inputIntegerIndex - 1)) {
-        System.out.println("Choose another column, this one is full.");
-        continue;
+      if (!this.round().columnHasSpace(inputIntegerIndex - 1)) { //Check if input is a columns if free space.
+        System.out.println(Messages.PLAYER_CONTROLLER_INPUT_FULL); //Send error message.
+        continue; //Ask for next input.
       }
-
-      column = inputIntegerIndex;
+      column = inputIntegerIndex; //Set input as valid column.
     }
 
-    System.out.printf("Du hast %d eingegeben. \n", (column));
-    return column - 1;
+    System.out.printf(Messages.PLAYER_CONTROLLER_INPUT, (column)); //Info about given number.
+    return column - 1; //Convert input to index and return to requester.
   }
 
+  /**
+   * Defines this controller to use {@link Token#PLAYER}.
+   *
+   * @return type: {@link Token#PLAYER}.
+   */
   @Override
   public Token token() {
     return Token.PLAYER;

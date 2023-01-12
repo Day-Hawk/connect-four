@@ -68,4 +68,24 @@ public interface Messages {
    * Variable holds test create message for round.
    */
   String ROUND_CREATE = "Round is created, this process may take some time.";
+
+  /**
+   * Ask player for a number to input.
+   */
+  String ASK_PLAYER_CONTROLLER_INPUT = "Enter a number between 1 and %d:";
+
+  /**
+   * Error if number is out of range
+   */
+  String PLAYER_CONTROLLER_INPUT_RANGE = "The entered number is outside the range. [input: %d]";
+
+  /**
+   * Error if column is already full.
+   */
+  String PLAYER_CONTROLLER_INPUT_FULL = "Choose another column, this one is full.";
+
+  /**
+   * Message if input was successful.
+   */
+  String PLAYER_CONTROLLER_INPUT = "You have entered %d. \n";
 }

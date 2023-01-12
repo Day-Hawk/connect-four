@@ -45,7 +45,7 @@ public class ConsoleText {
     }
 
     for (int i = 1; i <= round.columns(); i++) {
-      string.append("  %s ".formatted(round.b(i - 1) ? Integer.toString(i) : "X"));
+      string.append("  %s ".formatted(round.columnHasSpace(i - 1) ? Integer.toString(i) : "X"));
     }
 
     System.out.println(string);

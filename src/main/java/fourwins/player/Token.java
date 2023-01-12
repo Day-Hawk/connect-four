@@ -4,6 +4,7 @@ import fourwins.game.Round;
 import fourwins.controller.BaseController;
 import fourwins.controller.ComController;
 import fourwins.controller.PlayerController;
+import fourwins.utils.ObjectUtils;
 
 /**
  * Distinguishes the tokens that are placed on the board.
@@ -65,9 +66,8 @@ public enum Token {
    */
   @SuppressWarnings("unchecked")
   public <TYPE extends BaseController> TYPE injectMove(final Round round) throws NullPointerException {
-    if (this.moveClass == null) { //Check if a class is set for the instance.
-      throw new NullPointerException("There is no class that can be built.");
-    }
+    ObjectUtils.throwIfNull(this.moveClass, "There is no class that can be built."); //Check if a class is set for the instance.
+
     try {
       return (TYPE /*Format the created instance to the specified type.*/) this.moveClass
         .getConstructor(Round.class) //Get the constructor of the specified class, which contains only the round as a passing value.

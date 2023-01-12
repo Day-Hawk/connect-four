@@ -14,11 +14,22 @@ public class GameEngine {
    */
   private static GameEngine instance;
 
+  /**
+   * Give the main instance back. Stored in {@link GameEngine#instance}.
+   *
+   * @return reference of {@link GameEngine#instance}.
+   */
   public static GameEngine instance() {
     return instance;
   }
 
+  /**
+   *
+   */
   private final ConsoleInput consoleInput;
+  /**
+   * Reference to the current round. Can also be null.
+   */
   private Round round;
 
   protected GameEngine() {
