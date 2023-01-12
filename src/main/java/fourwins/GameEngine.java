@@ -8,6 +8,10 @@ import fourwins.game.Round;
  *
  */
 public class GameEngine {
+  /**
+   * Main instance of the game engine.
+   * Static variable so that other classes can access through {@link GameEngine#instance()}.
+   */
   private static GameEngine instance;
 
   public static GameEngine instance() {
