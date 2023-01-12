@@ -23,10 +23,12 @@ public class GameEngine {
   }
 
   public void init() {
+    System.out.println(Messages.LINE);
     System.out.println(Messages.LOGO); //Print logo.
+    System.out.println(Messages.LINE);
     System.out.println(Messages.WELCOME); //Print welcome message.
     System.out.print(Messages.ASK_DESCRIPTION); //Print question for description.
-    if (this.consoleInput.awaitBoolean(null /*null means that both values are used.*/)) { //Wait for user input.
+    if (this.consoleInput.awaitBoolean(null /*null means that both values are used.*/, null)) { //Wait for user input.
       this.explain();
       return;
     }
@@ -40,7 +42,7 @@ public class GameEngine {
   public void explain() {
     System.out.println(Messages.DESCRIPTION); //Print description.
     System.out.print(Messages.ASK_DESCRIPTION_UNDERSTOOD); //Print question, player understood.
-    if (this.consoleInput.awaitBoolean(null /*null means that both values are used.*/)) {
+    if (this.consoleInput.awaitBoolean(null /*null means that both values are used.*/, null)) {
       this.fieldSize(); //If player types 'true'.
     } else {
       this.explain(); //If player types 'false'.
@@ -53,7 +55,7 @@ public class GameEngine {
   public void fieldSize() {
     this.round = null; //Deletes the current round.
     System.out.print("Should the standard field size be used ? (yes/no): ");
-    if (!this.consoleInput.awaitBoolean(null)) {
+    if (!this.consoleInput.awaitBoolean(null, null)) {
       this.customField();
       return;
     }
@@ -80,14 +82,14 @@ public class GameEngine {
     System.out.printf("Round created with %d rows and %d columns.\n", rows, columns);
     System.out.print("Are you ready? (yes): ");
 
-    if (this.consoleInput.awaitBoolean(aBoolean -> aBoolean)) {
+    if (this.consoleInput.awaitBoolean(aBoolean -> aBoolean, null)) {
       this.round.init();
     }
   }
 
   public void reset() {
     System.out.print(Messages.ASK_RESET); //Ask for reset.
-    if (this.consoleInput.awaitBoolean(aBoolean -> aBoolean)) {
+    if (this.consoleInput.awaitBoolean(aBoolean -> aBoolean, null)) {
       System.out.println("\n".repeat(5));
       this.fieldSize();
     }

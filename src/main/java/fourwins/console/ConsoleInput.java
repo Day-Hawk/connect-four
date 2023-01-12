@@ -61,7 +61,8 @@ public final class ConsoleInput {
     }
   }
 
-  public boolean awaitBoolean(final Predicate<Boolean> booleanPredicate) {
+  public boolean awaitBoolean(final Predicate<Boolean> booleanPredicate,
+                              final Function<Boolean, String> message) {
     final Map<String, Boolean> valueMap = new HashMap<>() {  //Create new map with input to boolean. (Dirty way).
       { //Use scope in map to insert values.
         this.put("yes", true);
@@ -74,9 +75,9 @@ public final class ConsoleInput {
       }
     };
     return this.await(s -> valueMap.containsKey(s.toLowerCase()) /*Checks if the input is in the valueMap.*/,
-      valueMap::get /*Returns the value of the valueMap input.*/,
-      booleanPredicate == null ? aBoolean -> true : booleanPredicate,
-      null);
+      s -> valueMap.get(s.toLowerCase()) /*Returns the value of the valueMap input.*/,
+      booleanPredicate,
+      message);
     //Todo:
   }
 

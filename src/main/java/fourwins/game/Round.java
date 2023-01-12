@@ -1,15 +1,14 @@
 package fourwins.game;
 
 import fourwins.GameEngine;
-import fourwins.controller.check.PendingMove;
+import fourwins.console.Messages;
+import fourwins.controller.check.MoveChecker;
 import fourwins.console.ConsoleText;
+import fourwins.controller.check.VectorLine;
 import fourwins.game.exception.OutsideFieldException;
 import fourwins.player.Token;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -40,6 +39,8 @@ public final class Round {
    */
   private GameResult gameResult;
 
+  private final Set<VectorLine> comLines;
+
   /**
    * Creates a new round instance.
    *
@@ -54,6 +55,7 @@ public final class Round {
     this.totalMoves = 0; //Sets the start value.
     this.gameState = GameState.PREPARING; //Sets the default value to the variable.
     this.gameResult = GameResult.DRAW; //Sets the default value to the variable.
+    this.comLines = new HashSet<>();
 
     for (int i = 0; i < this.rows() /*Max amount of rows in field.*/; i++) {
       Arrays.fill(this.pitch[i] /* Row */, Token.EMPTY); //Fill every row array with EMPTY tokens.
@@ -64,12 +66,10 @@ public final class Round {
    * Initialize the round.
    */
   public void init() {
-    System.out.println("Initialisiere runde");
+    System.out.println(Messages.ROUND_CREATE); //Print round create message.
     this.currentMove = ThreadLocalRandom.current().nextDouble(.99)  /*Generate random to see who starts.*/ < 0.5 ?
       Token.PLAYER : //Random number between 0...0.99 is smaller than 0.5 player is first.
       Token.COM; //Otherwise COM.
-
-    System.out.format("%s startet. \n", this.currentMove.name());
 
     new ConsoleText().printPitch(this); //Prints an empty pitch into the console.
     this.gameState = GameState.RUNNING; //Changes the status of preparing to running.
@@ -82,14 +82,17 @@ public final class Round {
 
       final int columnIndex = this.currentMove.injectMove(this) //Create a controller from the active turn.
         .awaitColumn(); //This method interrupts the thread until a column is specified.
-      final PendingMove pendingMove = this.a(this.currentMove, columnIndex); //Perform the move. More info about the class.
+      final MoveChecker pendingMove = this.a(this.currentMove, columnIndex); //Perform the move. More info about the class.
 
-      if (pendingMove.checkAll()) { //The move is checked.
+      if (pendingMove.checkAll(vectors -> System.out.println(vectors))) { //The move is checked.
+        new ConsoleText().printPitch(this); //Print the new field in the console.
         this.end(this.currentMove); //If the check is true, the game is over and the current player/bot has won.
+        return;
       }
 
       this.currentMove = this.currentMove.flipToken(); //Transfers the active token to the other participant.
       new ConsoleText().printPitch(this); //Print the new field in the console.
+
       this.totalMoves++; //Increment moves.
     }
   }
@@ -126,6 +129,35 @@ public final class Round {
     return this.currentMove;
   }
 
+  public Set<VectorLine> comLines() {
+    return this.comLines;
+  }
+
+  /**
+   * @param rowIndex
+   * @throws OutsideFieldException
+   */
+  public int validateRowIndex(final int rowIndex) throws OutsideFieldException {
+    final int maxRowIndex = this.rows() - 1; //Store rows to calculate once.
+    if (rowIndex < 0 || rowIndex > maxRowIndex) { //Check if given row index is in bounds. 0 <= rowIndex < maxRowIndex. Throw error if outside bounds.
+      throw new OutsideFieldException("Illegal row. Max row index is %d. [given: %d]".formatted(maxRowIndex, rowIndex));
+    }
+    return rowIndex;
+  }
+
+  /**
+   * @param columnIndex
+   * @return
+   * @throws OutsideFieldException
+   */
+  public int validateColumnIndex(final int columnIndex) throws OutsideFieldException {
+    final int maxColumIndex = this.columns() - 1; //Store columns to calculate once.
+    if (columnIndex < 0 || columnIndex > maxColumIndex) { //Check if given colum index is in bounds. 0 <= columnIndex < maxColumIndex. Throw error if outside bounds.
+      throw new OutsideFieldException("Illegal colum. Max colum index is %d. [given: %d]".formatted(maxColumIndex, columnIndex));
+    }
+    return columnIndex;
+  }
+
   /**
    * Get the {@link Token} type of field.
    *
@@ -136,16 +168,8 @@ public final class Round {
    */
   public Token tokenAt(final int rowIndex,
                        final int columnIndex) throws OutsideFieldException {
-    final int maxRowIndex = this.rows() - 1; //Store rows to calculate once.
-    final int maxColumIndex = this.columns() - 1; //Store columns to calculate once.
-
-    if (rowIndex < 0 || rowIndex > maxRowIndex) { //Check if given row index is in bounds. 0 <= rowIndex < maxRowIndex. Throw error if outside bounds.
-      throw new OutsideFieldException("Illegal row. Max row index is %d. [given: %d]".formatted(maxRowIndex, rowIndex));
-    }
-    if (columnIndex < 0 || columnIndex > maxColumIndex) { //Check if given colum index is in bounds. 0 <= columnIndex < maxColumIndex. Throw error if outside bounds.
-      throw new OutsideFieldException("Illegal colum. Max colum index is %d. [given: %d]".formatted(maxColumIndex, columnIndex));
-    }
-    return this.pitch[rowIndex]/*Gets array in which the fields are*/ [columnIndex]; //Get token of field.
+    return this.pitch[this.validateRowIndex(rowIndex)]/*Gets array in which the fields are*/
+      [this.validateColumnIndex(columnIndex)]; //Get token of field.
   }
 
   /**
@@ -167,7 +191,7 @@ public final class Round {
     return Optional.empty(); //Return an empty optional, since the field does not exist.
   }
 
-  public PendingMove a(final Token token,
+  public MoveChecker a(final Token token,
                        final int columnIndex) {
     int rowIndex = -1; //Stores the selected row -> row also used as topArray.
     Token[] topArray = null; //This variable will hold the row on top of the column.
@@ -185,7 +209,7 @@ public final class Round {
     }
 
     topArray[columnIndex] = token;
-    return new PendingMove(this, token, rowIndex, columnIndex);
+    return new MoveChecker(this, token, rowIndex, columnIndex);
   }
 
   public boolean b(final int columnIndex) {
@@ -196,6 +220,17 @@ public final class Round {
       return true;
     }
     return false;
+  }
+
+  public int c(final int columnIndex) throws OutsideFieldException {
+    this.validateColumnIndex(columnIndex);
+    for (int i = this.rows() - 1; i >= 0; i--) { //Reverse loop through the rows of the pitch. (-> From bottom to top)
+      if (this.pitch[i][columnIndex] != Token.EMPTY) { //Check if field at row with the given column is unused.
+        continue; //Go to next row.
+      }
+      return i;
+    }
+    return -1;
   }
 
   public Set<Integer> availableColumns() {

@@ -2,16 +2,20 @@ package fourwins.console;
 
 import fourwins.game.Round;
 import fourwins.player.Token;
+import fourwins.utils.ObjectUtils;
 
 public class ConsoleText {
 
+  /**
+   * @param round for which the field is to be printed.
+   * @throws NullPointerException if round is null.
+   */
   public void printPitch(final Round round) throws NullPointerException {
-    if (round == null) { //Check if round is not null. If given object is null, throw error.
-      throw new NullPointerException("Given round instance is null.");
-    }
+    ObjectUtils.throwIfNull(round, "Round is null."); //Check if round is not null. If given object is null, throw error.
 
     final int totalColumns = round.columns(); //Store value of total columns.
     final StringBuilder string = new StringBuilder("\n".repeat(3))
+      .append(Messages.LINE)
       .append(this.horizontalLine(totalColumns))
       .append("\n");
 
@@ -47,8 +51,15 @@ public class ConsoleText {
     System.out.println(string);
   }
 
+  /**
+   * Create a line for the table with the number of columns.
+   *
+   * @param columns number of columns.
+   * @return created line as string.
+   */
   private String horizontalLine(final int columns) {
-    return "+---".repeat(columns) + "+";
+    return "+---" /*Base string to duplicate.*/
+      .repeat(columns) + "+";
   }
 
   private void appendLegendComponent(final StringBuilder stringBuilder,

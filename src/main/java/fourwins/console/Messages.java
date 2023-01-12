@@ -4,6 +4,11 @@ package fourwins.console;
  * This interface holds all message from game.
  */
 public interface Messages {
+
+  String LINE = """
+    ========================================================================================================================
+    """;
+
   /**
    * Variable holds the logo message.
    */
@@ -41,7 +46,11 @@ public interface Messages {
    */
   String DESCRIPTION = """
 
-     Fabio stinkt.
+     Each player has 21 tiles of the same color. When a player drops a tile into a column,
+     it occupies the lowest free space in the column. The winner is the first player to line up four or
+     more of his pieces horizontally, vertically or diagonally.
+
+     (-> translated Source: https://de.wikipedia.org/wiki/Vier_gewinnt)
 
     """;
 
@@ -54,4 +63,9 @@ public interface Messages {
    * Variable holds the question, if game should be reset.
    */
   String ASK_RESET = "Reset? (yes): ";
+
+  /**
+   * Variable holds test create message for round.
+   */
+  String ROUND_CREATE = "Round is created, this process may take some time.";
 }
