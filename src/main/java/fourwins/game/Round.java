@@ -60,7 +60,7 @@ public final class Round {
     this.totalMoves = 0; //Sets the start value.
     this.gameState = GameState.PREPARING; //Sets the default value to the variable.
     this.gameResult = GameResult.DRAW; //Sets the default value to the variable.
-    this.comLines = new HashSet<>();
+    this.comLines = new HashSet<>(); //Create new HashSet instance.
 
     for (int i = 0; i < this.rows() /*Max amount of rows in field.*/; i++) {
       Arrays.fill(this.pitch[i] /* Row */, Token.EMPTY); //Fill every row array with EMPTY tokens.
@@ -140,17 +140,22 @@ public final class Round {
   }
 
   /**
-   * Get
+   * Get all {@link VectorLine} stored for COM to predict next moves.
    *
-   * @return
+   * @return reference of {@link Round#comLines}.
    */
   public Set<VectorLine> comLines() {
     return this.comLines;
   }
 
   /**
-   * @param rowIndex
-   * @throws OutsideFieldException
+   * Checks if the given index is a valid row in the game field.
+   * <p>
+   * -> 0 <= rowIndex < maxRowIndex(max amount of rows - 1)
+   *
+   * @param rowIndex which must be checked.
+   * @return rowIndex so this method can be used chained.
+   * @throws OutsideFieldException if given rowIndex is out of rang. (No present on pitch.)
    */
   public int validateRowIndex(final int rowIndex) throws OutsideFieldException {
     final int maxRowIndex = this.rows() - 1; //Store rows to calculate once.
@@ -161,9 +166,13 @@ public final class Round {
   }
 
   /**
-   * @param columnIndex
-   * @return
-   * @throws OutsideFieldException
+   * Checks if the given index is a valid column in the game field.
+   * <p>
+   * -> 0 <= rowIndex < maxRowIndex(max amount of rows - 1)
+   *
+   * @param columnIndex which must be checked.
+   * @return rowIndex so this method can be used chained
+   * @throws OutsideFieldException if given rowIndex is out of rang. (No present on pitch.)
    */
   public int validateColumnIndex(final int columnIndex) throws OutsideFieldException {
     final int maxColumIndex = this.columns() - 1; //Store columns to calculate once.
@@ -171,6 +180,20 @@ public final class Round {
       throw new OutsideFieldException("Illegal colum. Max colum index is %d. [given: %d]".formatted(maxColumIndex, columnIndex));
     }
     return columnIndex;
+  }
+
+  /**
+   * Checks whether the number of fields is in one direction of the field 4 or above.
+   *
+   * @param size value to be checked.
+   * @return Returns the size value so that this method can be used directly.
+   * @throws IllegalArgumentException if the number is less than 4.
+   */
+  private int checkSizeValue(final int size) throws IllegalArgumentException {
+    if (size < 4) { //If the value is less than four, it is not 4 or greater. Then an error is thrown.
+      throw new IllegalArgumentException("Illegal size for field. Must be higher than 4. [given: %d]".formatted(size));
+    }
+    return size;
   }
 
   /**
@@ -307,19 +330,5 @@ public final class Round {
 
     System.out.println(this.gameResult.message()); //Print fancy screen of GameResult.
     GameEngine.instance().reset(); //Go to reset -> start next game.
-  }
-
-  /**
-   * Checks whether the number of fields is in one direction of the field 4 or above.
-   *
-   * @param size value to be checked.
-   * @return Returns the size value so that this method can be used directly.
-   * @throws IllegalArgumentException if the number is less than 4.
-   */
-  private int checkSizeValue(final int size) throws IllegalArgumentException {
-    if (size < 4) { //If the value is less than four, it is not 4 or greater. Then an error is thrown.
-      throw new IllegalArgumentException("Illegal size for field. Must be higher than 4. [given: %d]".formatted(size));
-    }
-    return size;
   }
 }

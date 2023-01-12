@@ -38,6 +38,6 @@ public final class TokenTest {
     Assertions.assertDoesNotThrow(() -> Token.PLAYER.injectMove(round)); //Check if player character is injectable.
     Assertions.assertDoesNotThrow(() -> Token.COM.injectMove(round)); //Check if com character is injectable.
 
-    Assertions.assertThrows(NullPointerException.class, () -> Token.PLAYER.injectMove(round)); //Should throw error -> no class defined.
+    Assertions.assertThrows(NullPointerException.class, () -> Token.EMPTY.injectMove(round)); //Should throw error -> no class defined.
   }
 }

@@ -10,7 +10,7 @@ jar {
   manifest {
     attributes "Main-Class": "fourwins.GameMain"
   }
-  }
+}
 
 dependencies {
   testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'

@@ -26,8 +26,9 @@ public final class VectorLine extends HashSet<Vector> {
   }
 
   /**
+   * Get the {@link Token} type of fields this list holds.
    *
-   * @return
+   * @return reference of {@link VectorLine#token}.
    */
   public Token token() {
     return this.token;

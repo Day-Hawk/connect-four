@@ -29,11 +29,11 @@ public class ComController extends BaseController {
       .filter(vectors -> vectors.token() != Token.EMPTY)
       .sorted((o1, o2) -> Integer.compare(this.calculateSortPosition(o2), this.calculateSortPosition(o1)))
       .map(this::f)
-      .filter(vectorPair -> !vectorPair.extraPoints().isEmpty())
+      .filter(vectorPair -> !vectorPair.predictionPoints().isEmpty())
       .findFirst()
       .map(vectorPair -> {
         this.round().comLines().remove(vectorPair.vectors());
-        return vectorPair.extraPoints().get(ThreadLocalRandom.current().nextInt(vectorPair.extraPoints().size()));
+        return vectorPair.predictionPoints().get(ThreadLocalRandom.current().nextInt(vectorPair.predictionPoints().size()));
       })
       .map(Vector::x)
       .orElseGet(this::randomColumn);

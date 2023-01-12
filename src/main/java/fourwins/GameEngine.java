@@ -32,8 +32,11 @@ public class GameEngine {
    */
   private Round round;
 
+  /**
+   *
+   */
   protected GameEngine() {
-    instance = this;
+    instance = this; //<- Set as instance.
     this.consoleInput = new ConsoleInput(); //Create new consoleInput instance.
   }
 

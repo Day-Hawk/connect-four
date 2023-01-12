@@ -97,5 +97,4 @@ public final class ConsoleInput {
       return false;
     }, Integer::parseInt, integerPredicate, message);
   }
-
 }
