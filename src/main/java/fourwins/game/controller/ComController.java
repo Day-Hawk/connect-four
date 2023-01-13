@@ -1,16 +1,17 @@
-package fourwins.controller;
+package fourwins.game.controller;
 
-import fourwins.controller.check.Vector;
-import fourwins.controller.check.VectorLine;
-import fourwins.controller.check.VectorPair;
+import fourwins.GameEngine;
+import fourwins.game.controller.check.Vector;
+import fourwins.game.controller.check.VectorLine;
+import fourwins.game.controller.check.VectorPair;
 import fourwins.game.Round;
 import fourwins.game.exception.OutsideFieldException;
-import fourwins.player.Token;
+import fourwins.game.Token;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class ComController extends BaseController {
+public final class ComController extends BaseController {
 
   public ComController(final Round round) {
     super(round);
@@ -33,7 +34,7 @@ public class ComController extends BaseController {
       .findFirst()
       .map(vectorPair -> {
         this.round().comLines().remove(vectorPair.vectors());
-        return vectorPair.predictionPoints().get(ThreadLocalRandom.current().nextInt(vectorPair.predictionPoints().size()));
+        return vectorPair.predictionPoints().get(GameEngine.instance().random().nextInt(vectorPair.predictionPoints().size()));
       })
       .map(Vector::x)
       .orElseGet(this::randomColumn);
@@ -95,6 +96,6 @@ public class ComController extends BaseController {
 
   public int randomColumn() {
     final Set<Integer> availableColumns = round().availableColumns();
-    return availableColumns.toArray(new Integer[0])[ThreadLocalRandom.current().nextInt(availableColumns.size())];
+    return availableColumns.toArray(new Integer[0])[GameEngine.instance().random().nextInt(availableColumns.size())];
   }
 }

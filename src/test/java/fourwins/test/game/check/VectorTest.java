@@ -1,11 +1,11 @@
-package fourwins.test.controller.check;
+package fourwins.test.game.check;
 
-import fourwins.controller.check.Vector;
+import fourwins.game.controller.check.Vector;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests for {@link fourwins.controller.check.Vector}.
+ * Tests for {@link Vector}.
  */
 public final class VectorTest {
   /**

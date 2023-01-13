@@ -1,7 +1,7 @@
-package fourwins.controller;
+package fourwins.game.controller;
 
 import fourwins.game.Round;
-import fourwins.player.Token;
+import fourwins.game.Token;
 import fourwins.utils.ObjectUtils;
 
 /**
@@ -21,7 +21,6 @@ public abstract class BaseController {
    */
   public BaseController(final Round round) {
     ObjectUtils.throwIfNull(round, "Round is null."); //Checks the round is not null.
-
     this.round = round;
   }
 

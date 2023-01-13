@@ -1,9 +1,8 @@
-package fourwins.player;
+package fourwins.game;
 
-import fourwins.game.Round;
-import fourwins.controller.BaseController;
-import fourwins.controller.ComController;
-import fourwins.controller.PlayerController;
+import fourwins.game.controller.BaseController;
+import fourwins.game.controller.ComController;
+import fourwins.game.controller.PlayerController;
 import fourwins.utils.ObjectUtils;
 
 /**
@@ -11,7 +10,7 @@ import fourwins.utils.ObjectUtils;
  */
 public enum Token {
   /**
-   * Player sitting between the screen and the chair.
+   * Player sitting between the screen and the chair to defeat the COM.
    */
   PLAYER('X', PlayerController.class),
 

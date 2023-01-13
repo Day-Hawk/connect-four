@@ -1,7 +1,7 @@
 package fourwins.console;
 
 import fourwins.game.Round;
-import fourwins.player.Token;
+import fourwins.game.Token;
 import fourwins.utils.ObjectUtils;
 
 public class ConsoleText {

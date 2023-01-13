@@ -1,4 +1,4 @@
-package fourwins.controller.check;
+package fourwins.game.controller.check;
 
 import fourwins.utils.ObjectUtils;
 

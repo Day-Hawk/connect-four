@@ -1,8 +1,8 @@
-package fourwins.controller.check;
+package fourwins.game.controller.check;
 
 import fourwins.game.Round;
 import fourwins.game.exception.OutsideFieldException;
-import fourwins.player.Token;
+import fourwins.game.Token;
 import fourwins.utils.ObjectUtils;
 
 import java.util.function.Consumer;
@@ -12,7 +12,7 @@ import java.util.function.Consumer;
  * <p>
  * This class also extends the list of the {@link Round#comLines()} for the COM player.
  */
-public class MoveChecker {
+public final class MoveChecker {
   /**
    * Round to check in.
    */

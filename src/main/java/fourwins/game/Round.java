@@ -2,15 +2,13 @@ package fourwins.game;
 
 import fourwins.GameEngine;
 import fourwins.console.Messages;
-import fourwins.controller.check.MoveChecker;
+import fourwins.game.controller.check.MoveChecker;
 import fourwins.console.ConsoleText;
-import fourwins.controller.check.VectorLine;
+import fourwins.game.controller.check.VectorLine;
 import fourwins.game.exception.OutsideFieldException;
-import fourwins.player.Token;
 import fourwins.utils.ObjectUtils;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * The round which holds the information about a game.
@@ -72,7 +70,7 @@ public final class Round {
    */
   public void init() {
     System.out.println(Messages.ROUND_CREATE); //Print round create message.
-    this.currentMove = ThreadLocalRandom.current().nextDouble(.99)  /*Generate random to see who starts.*/ < 0.5 ?
+    this.currentMove = GameEngine.instance().random().nextDouble()  /*Generate random to see who starts.*/ < 0.5 ?
       Token.PLAYER : //Random number between 0...0.99 is smaller than 0.5 player is first.
       Token.COM; //Otherwise COM.
 

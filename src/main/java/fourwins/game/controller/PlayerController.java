@@ -1,15 +1,15 @@
-package fourwins.controller;
+package fourwins.game.controller;
 
 import fourwins.GameEngine;
 import fourwins.console.Messages;
 import fourwins.game.Round;
-import fourwins.player.Token;
+import fourwins.game.Token;
 
 /**
  * Class which serves as a controller of the player.
  * This class asks for the field and processes the answer and returns a valid answer at the end.
  */
-public class PlayerController extends BaseController {
+public final class PlayerController extends BaseController {
   /**
    * Construct a class.
    *

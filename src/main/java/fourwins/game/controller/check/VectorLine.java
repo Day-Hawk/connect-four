@@ -1,6 +1,6 @@
-package fourwins.controller.check;
+package fourwins.game.controller.check;
 
-import fourwins.player.Token;
+import fourwins.game.Token;
 
 import java.util.HashSet;
 

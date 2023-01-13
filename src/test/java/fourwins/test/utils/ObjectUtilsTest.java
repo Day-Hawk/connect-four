@@ -1,6 +1,6 @@
 package fourwins.test.utils;
 
-import fourwins.controller.check.Vector;
+import fourwins.game.controller.check.Vector;
 import fourwins.utils.ObjectUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

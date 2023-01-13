@@ -1,12 +1,12 @@
-package fourwins.test.player;
+package fourwins.test.game;
 
 import fourwins.game.Round;
-import fourwins.player.Token;
+import fourwins.game.Token;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests for {@link fourwins.player.Token}.
+ * Tests for {@link Token}.
  */
 public final class TokenTest {
   /**

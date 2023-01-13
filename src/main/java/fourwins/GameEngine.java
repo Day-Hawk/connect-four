@@ -4,6 +4,9 @@ import fourwins.console.ConsoleInput;
 import fourwins.console.Messages;
 import fourwins.game.Round;
 
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
  *
  */
@@ -33,9 +36,11 @@ public class GameEngine {
   private Round round;
 
   /**
-   *
+   * Construct game engine instance. And set as static instance.
+   * Created instance will be stored in {@link GameEngine#instance}.
+   * The static instance can be obtained with {@link GameEngine#instance()}.
    */
-  protected GameEngine() {
+  public GameEngine() {
     instance = this; //<- Set as instance.
     this.consoleInput = new ConsoleInput(); //Create new consoleInput instance.
   }
@@ -115,5 +120,14 @@ public class GameEngine {
 
   public ConsoleInput consoleInput() {
     return this.consoleInput;
+  }
+
+  /**
+   * Get random instance, to use for random operations in game.
+   *
+   * @return random instance of {@link ThreadLocalRandom#current()}.
+   */
+  public Random random() {
+    return ThreadLocalRandom.current(); //Get random instance of ThreadLocalRandom.
   }
 }
