@@ -71,8 +71,8 @@ public class ComController extends BaseController {
       directionVector.y() != 0 ? directionVector.y() / Math.abs(directionVector.y()) : 0);
     Vector invertedDirectionVector = new Vector(directionVector.x() * -1, directionVector.y() * -1);
 
-    Vector left = from.add(directionVector);
-    Vector right = to.add(invertedDirectionVector);
+    final Vector left = from.add(directionVector);
+    final Vector right = to.add(invertedDirectionVector);
 
     if (this.checkIfFieldIsValid(left)) {
       extraPoints.add(left);
@@ -94,7 +94,7 @@ public class ComController extends BaseController {
   }
 
   public int randomColumn() {
-    return round().availableColumns().toArray(new Integer[0])
-      [ThreadLocalRandom.current().nextInt(round().availableColumns().size())];
+    final Set<Integer> availableColumns = round().availableColumns();
+    return availableColumns.toArray(new Integer[0])[ThreadLocalRandom.current().nextInt(availableColumns.size())];
   }
 }

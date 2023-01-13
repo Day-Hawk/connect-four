@@ -87,9 +87,9 @@ public final class Round {
 
       final int columnIndex = this.currentMove.injectMove(this) //Create a controller from the active turn.
         .awaitColumn(); //This method interrupts the thread until a column is specified.
-      final MoveChecker pendingMove = this.move(this.currentMove, columnIndex); //Perform the move. More info about the class.
+      final MoveChecker moveChecker = this.move(this.currentMove, columnIndex); //Perform the move. More info about the class.
 
-      if (pendingMove.checkAll(vectors -> System.out.println(vectors))) { //The move is checked.
+      if (moveChecker.checkAll(vectors -> System.out.println(vectors))) { //The move is checked.
         new ConsoleText().printPitch(this); //Print the new field in the console.
         this.end(this.currentMove); //If the check is true, the game is over and the current player/bot has won.
         return; //Return because game is over.
@@ -252,10 +252,7 @@ public final class Round {
       break; //Because topArray found.
     }
 
-    //Todo: Custom exception.
-    if (topArray == null) { //Throw error if no topArray found -> overflow.
-      throw new NullPointerException("Column overflow.");
-    }
+    ObjectUtils.throwIfNull(topArray, "Column overflow."); //Throw error if no topArray found -> overflow.
 
     topArray[columnIndex] = token; //Set token on field.
     return new MoveChecker(this, token, rowIndex, columnIndex);

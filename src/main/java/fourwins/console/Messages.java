@@ -72,7 +72,7 @@ public interface Messages {
   /**
    * Ask player for a number to input.
    */
-  String ASK_PLAYER_CONTROLLER_INPUT = "Enter a number between 1 and %d:";
+  String ASK_PLAYER_CONTROLLER_INPUT = "Enter a number between 1 and %d: ";
 
   /**
    * Error if number is out of range
