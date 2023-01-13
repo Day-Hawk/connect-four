@@ -5,9 +5,7 @@ package fourwins.console;
  */
 public interface Messages {
 
-  String LINE = """
-    ========================================================================================================================
-    """;
+  String LINE = "===========================================================================================================================";
 
   /**
    * Variable holds the logo message.
@@ -29,7 +27,11 @@ public interface Messages {
   /**
    * Variable holds the welcome message.
    */
-  String WELCOME = "Welcome to four wins.";
+  String WELCOME = """
+
+    Welcome to four wins.
+    Draw the command window at least as large that the '=' strokes are displayed in one line.
+    """;
 
   /**
    * Variable holds the question, if a explanation is required.
@@ -63,6 +65,40 @@ public interface Messages {
    * Variable holds the question, if game should be reset.
    */
   String ASK_RESET = "Reset? (yes): ";
+
+
+  /**
+   * Ask if player is ready.
+   */
+  String ASK_READY = "Are you ready? (yes): ";
+
+  /**
+   * Ask if custom field should be used.
+   */
+  String ASK_FIELD_SIZE = "Should the standard field size be used ? (yes/no): ";
+
+  /**
+   * Ask for custom rows amount.
+   */
+  String ASK_FIELD_SIZE_ROW = "Enter the number of rows desired (int >= 4): ";
+
+
+  /**
+   * Error message if given row is outside range.
+   */
+  String FIELD_SIZE_ROW_ERROR = "The number of rows must be greater than 4. [input %d]";
+
+  /**
+   * Ask for custom columns amount.
+   */
+  String ASK_FIELD_SIZE_COLUMN = "Enter the number of columns desired (int >= 4): ";
+
+
+  /**
+   * Error message if given row is outside range.
+   */
+  String FIELD_SIZE_COLUMN_ERROR = "The number of columns must be greater than 4. [input %d]";
+
 
   /**
    * Variable holds test create message for round.

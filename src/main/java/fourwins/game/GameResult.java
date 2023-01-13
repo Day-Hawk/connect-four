@@ -8,7 +8,6 @@ public enum GameResult {
    * If the player has won.
    */
   WON("""
-
     WWWWWWWW                           WWWWWWWW     OOOOOOOOO     NNNNNNNN        NNNNNNNN
     W::::::W                           W::::::W   OO:::::::::OO   N:::::::N       N::::::N
     W::::::W                           W::::::W OO:::::::::::::OO N::::::::N      N::::::N
@@ -25,14 +24,12 @@ public enum GameResult {
               W:::::W         W:::::W           OO:::::::::::::OO N::::::N       N:::::::N
                W:::W           W:::W              OO:::::::::OO   N::::::N        N::::::N
                 WWW             WWW                 OOOOOOOOO     NNNNNNNN         NNNNNNN
-
     """),
 
   /**
    * If the player has lost.
    */
   LOST("""
-
     LLLLLLLLLLL                                                        tttt
     L:::::::::L                                                     ttt:::t
     L:::::::::L                                                     t:::::t
@@ -49,14 +46,12 @@ public enum GameResult {
     L::::::::::::::::::::::Lo:::::::::::::::os::::::::::::::s       tt::::::::::::::t
     L::::::::::::::::::::::L oo:::::::::::oo  s:::::::::::ss          tt:::::::::::tt
     LLLLLLLLLLLLLLLLLLLLLLLL   ooooooooooo     sssssssssss              ttttttttttt
-
     """),
 
   /**
    * If it is a draw.
    */
   DRAW("""
-
     DDDDDDDDDDDDD
     D::::::::::::DDD
     D:::::::::::::::DD
@@ -73,7 +68,6 @@ public enum GameResult {
     D:::::::::::::::DD    r:::::r          a:::::aaaa::::::a       w:::::w         w:::::w
     D::::::::::::DDD      r:::::r           a::::::::::aa:::a       w:::w           w:::w
     DDDDDDDDDDDDD         rrrrrrr            aaaaaaaaaa  aaaa        www             www
-
     """);
 
   /**

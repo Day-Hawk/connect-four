@@ -11,7 +11,7 @@ import fourwins.game.Token;
  */
 public final class PlayerController extends BaseController {
   /**
-   * Construct a class.
+   * Create instance of {@link PlayerController}.
    *
    * @param round for which the controller is created.
    */

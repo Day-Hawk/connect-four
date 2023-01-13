@@ -3,7 +3,7 @@ package fourwins.game;
 import fourwins.GameEngine;
 import fourwins.console.Messages;
 import fourwins.game.controller.check.MoveChecker;
-import fourwins.console.ConsoleText;
+import fourwins.console.ConsolePitch;
 import fourwins.game.controller.check.VectorLine;
 import fourwins.game.exception.OutsideFieldException;
 import fourwins.utils.ObjectUtils;
@@ -74,8 +74,8 @@ public final class Round {
       Token.PLAYER : //Random number between 0...0.99 is smaller than 0.5 player is first.
       Token.COM; //Otherwise COM.
 
-    new ConsoleText().printPitch(this); //Prints an empty pitch into the console.
     this.gameState = GameState.RUNNING; //Changes the status of preparing to running.
+    System.out.println(new ConsolePitch(this).buildPitchString()); //Prints an empty pitch into the console.
 
     while (this.gameState == GameState.RUNNING) { //Round runs as long as the game is set to running.
       if (this.totalMoves >= this.rows() * this.columns()/* Comparison value are the maximum moves -> number of fields.*/) {
@@ -87,14 +87,14 @@ public final class Round {
         .awaitColumn(); //This method interrupts the thread until a column is specified.
       final MoveChecker moveChecker = this.move(this.currentMove, columnIndex); //Perform the move. More info about the class.
 
-      if (moveChecker.checkAll(vectors -> System.out.println(vectors))) { //The move is checked.
-        new ConsoleText().printPitch(this); //Print the new field in the console.
+      if (moveChecker.checkAll()) { //The move is checked.
+        System.out.println(new ConsolePitch(this).buildPitchString()); //Print the new field in the console.
         this.end(this.currentMove); //If the check is true, the game is over and the current player/bot has won.
         return; //Return because game is over.
       }
 
       this.currentMove = this.currentMove.flipToken(); //Transfers the active token to the other participant.
-      new ConsoleText().printPitch(this); //Print the new field in the console.
+      System.out.println(new ConsolePitch(this).buildPitchString()); //Print the new field in the console.
 
       this.totalMoves++; //Increment moves.
     }
@@ -313,17 +313,27 @@ public final class Round {
   }
 
   /**
+   * Get if the game is running or not.
+   *
+   * @return true, if {@link Round#gameState} is set to {@link GameState#RUNNING}.
+   */
+  public boolean running() {
+    return this.gameState == GameState.RUNNING;
+  }
+
+  /**
    * End this round.
    *
    * @param token could be null.
    */
-  public void end(Token token) {
+  private void end(Token token) {
     this.gameState = GameState.END; //Set state as end.
     this.gameResult = token == null ? GameResult.DRAW /*If given token is null.*/ :
       token == Token.PLAYER /*Runs if token is present*/ ? GameResult.WON /*Token is player*/ :
         GameResult.LOST /*Token is com*/;
 
     System.out.println(this.gameResult.message()); //Print fancy screen of GameResult.
+    System.out.println(Messages.LINE);
     GameEngine.instance().reset(); //Go to reset -> start next game.
   }
 }

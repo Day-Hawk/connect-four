@@ -53,11 +53,11 @@ public final class MoveChecker {
     this.column = column;
   }
 
-  public boolean checkAll(Consumer<VectorLine> fourLineConsumer) {
-    return this.vertical(fourLineConsumer) ||
-      this.horizontal(fourLineConsumer) ||
-      this.diagonalLeft(fourLineConsumer) ||
-      this.diagonalRight(fourLineConsumer);
+  public boolean checkAll() {
+    return this.vertical() ||
+      this.horizontal() ||
+      this.diagonalLeft() ||
+      this.diagonalRight();
   }
 
   /**
@@ -65,7 +65,7 @@ public final class MoveChecker {
    *
    * @return true if there is a row of four in the column.
    */
-  public boolean vertical(Consumer<VectorLine> fourLineConsumer) {
+  public boolean vertical() {
     boolean returnValue = false; //Value that is modified.
     final VectorLine verticalLines = new VectorLine(this.token); //Create a vector line that stores chains.
 
@@ -74,7 +74,6 @@ public final class MoveChecker {
         if (this.round.tokenAt(i, this.column) == this.token) { //Checks which value is on the field.
           verticalLines.add(new Vector(this.column /*x*/, i /*y*/)); //Adds the vector to the line.
           if (verticalLines.size() >= 4) { //If the number is less than four, the whole process is repeated.
-            System.out.println("Vertial 4");
             returnValue = true; //4 is reached!
             break;
           }
@@ -82,7 +81,6 @@ public final class MoveChecker {
           this.utilizeLines(verticalLines); //Writes the existing lines to memory. (For the COM).
         }
       } catch (final OutsideFieldException exception) {
-        System.out.println("broke");
         break; //Position is outside the playing field.
       }
     }
@@ -90,7 +88,7 @@ public final class MoveChecker {
     return returnValue; //Returns the value. If true the token has won.
   }
 
-  public boolean horizontal(Consumer<VectorLine> fourLineConsumer) {
+  public boolean horizontal() {
     boolean returnValue = false; //Value that is modified.
     final VectorLine verticalLines = new VectorLine(this.token); //Create a vector line that stores chains.
 
@@ -100,7 +98,6 @@ public final class MoveChecker {
           verticalLines.add(new Vector(i /*x*/, this.row /*y*/)); //Adds the vector to the line.
 
           if (verticalLines.size() >= 4) { //If the number is less than four, the whole process is repeated.
-            System.out.println("Horzional 4");
             returnValue = true; //4 is reached!
             break; //-> no storage needed. Game over.
           }
@@ -108,7 +105,6 @@ public final class MoveChecker {
           this.utilizeLines(verticalLines); //Writes the existing lines to memory. (For the COM).
         }
       } catch (final OutsideFieldException exception) {
-        System.out.println("broke");
         break;
       }
     }
@@ -116,7 +112,7 @@ public final class MoveChecker {
     return returnValue;
   }
 
-  public boolean diagonalLeft(Consumer<VectorLine> fourLineConsumer) {
+  public boolean diagonalLeft() {
     boolean returnValue = false; //Value that is modified.
     final VectorLine verticalLines = new VectorLine(this.token); //Create a vector line that stores chains.
 
@@ -132,7 +128,6 @@ public final class MoveChecker {
         verticalLines.add(currentCursor); //Adds the vector to the line.
 
         if (verticalLines.size() >= 4) { //If the number is less than four, the whole process is repeated.
-          System.out.println("Diagonal L 4");
           returnValue = true; //4 is reached! -> No need to write lines to memory. Game won.
           break;
         }
@@ -145,7 +140,7 @@ public final class MoveChecker {
     return returnValue;
   }
 
-  public boolean diagonalRight(Consumer<VectorLine> fourLineConsumer) {
+  public boolean diagonalRight() {
     boolean returnValue = false; //Value that is modified.
     final VectorLine verticalLines = new VectorLine(this.token); //Create a vector line that stores chains.
 
@@ -161,7 +156,6 @@ public final class MoveChecker {
         verticalLines.add(currentCursor); //Adds the vector to the line.
 
         if (verticalLines.size() >= 4) { //If the number is less than four, the whole process is repeated.
-          System.out.println("Diagonal R 4");
           returnValue = true; //4 is reached! -> No need to write lines to memory. Game won.
           break;
         }
