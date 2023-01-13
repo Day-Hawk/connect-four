@@ -8,9 +8,19 @@ import java.util.Scanner;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+/**
+ * Class for managing console input. Filter string input, map strings to other types.
+ * It is also possible to check mapped objects and create a message if the given object is not valid for the program.
+ */
 public final class ConsoleInput {
+  /**
+   * Scanner instance to use for class methods.
+   */
   private final Scanner scanner;
 
+  /**
+   * Create a new input class. A scanner is created in the constructor.
+   */
   public ConsoleInput() {
     this.scanner = new Scanner(System.in);
   }
@@ -61,6 +71,17 @@ public final class ConsoleInput {
     }
   }
 
+  /**
+   * Wait for a boolean input.
+   * <p>
+   * [yes, y, true] -> true
+   * <p>
+   * [no, n, false] -> false
+   *
+   * @param booleanPredicate checks if the entered boolean is valid.
+   * @param message          output message if booleanPredicate check fails.
+   * @return entered boolean value.
+   */
   public boolean awaitBoolean(final Predicate<Boolean> booleanPredicate,
                               final Function<Boolean, String> message) {
     final Map<String, Boolean> valueMap = new HashMap<>() {  //Create new map with input to boolean. (Dirty way).
@@ -82,19 +103,23 @@ public final class ConsoleInput {
   }
 
   /**
-   * @param integerPredicate
-   * @param message
-   * @return
+   * Wait for integer input.
+   *
+   * @param integerPredicate checks if the entered integer is valid.
+   * @param message          output message if integerPredicate check fails.
+   * @return entered integer
    */
   public Integer awaitInteger(final Predicate<Integer> integerPredicate,
                               final Function<Integer, String> message) {
     return this.await(s -> {
-      try {
-        Integer.parseInt(s);
-        return true;
-      } catch (final NumberFormatException ignore) {
-      }
-      return false;
-    }, Integer::parseInt, integerPredicate, message);
+        try {
+          Integer.parseInt(s); //Check if input is integer.
+          return true; //Return, true if input can be converted to integer.
+        } catch (final NumberFormatException ignore /*If parseInt fails -> handle below.*/) {
+        }
+        return false;
+      }, Integer::parseInt /*Convert to integer*/,
+      integerPredicate /*Check if integer.*/,
+      message /*If check fails message.*/);
   }
 }
