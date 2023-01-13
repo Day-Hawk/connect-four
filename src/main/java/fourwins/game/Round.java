@@ -149,7 +149,7 @@ public final class Round {
   /**
    * Checks if the given index is a valid row in the game field.
    * <p>
-   * -> 0 <= rowIndex < maxRowIndex(max amount of rows - 1)
+   * -> 0 &lt;= rowIndex &lt; maxRowIndex(max amount of rows - 1)
    *
    * @param rowIndex which must be checked.
    * @return rowIndex so this method can be used chained.
@@ -166,7 +166,7 @@ public final class Round {
   /**
    * Checks if the given index is a valid column in the game field.
    * <p>
-   * -> 0 <= rowIndex < maxRowIndex(max amount of rows - 1)
+   * -> 0 &lt;= rowIndex &lt; maxRowIndex(max amount of rows - 1)
    *
    * @param columnIndex which must be checked.
    * @return rowIndex so this method can be used chained

@@ -50,6 +50,7 @@ public class ConsolePitch {
    * Create pitch as {@link String}.
    * Example see {@link ConsolePitch}.
    *
+   * @return build pitch string.
    * @throws NullPointerException if round is null.
    */
   public String buildPitchString() {

@@ -4,7 +4,9 @@ package fourwins.console;
  * This interface holds all message from game.
  */
 public interface Messages {
-
+  /**
+   * line.
+   */
   String LINE = "===========================================================================================================================";
 
   /**

@@ -19,8 +19,8 @@ public record Vector(int x,
    * The values of this instance remain untouched.
    * <p>
    * Simple description of the new {@link Vector}:
-   * new x <- this.x + given.x
-   * new y <- this.y + given.y
+   * new x &lt;- this.x + given.x
+   * new y &lt;- this.y + given.y
    *
    * @param vector which is to be added.
    * @return new vector instance with added values.
@@ -36,8 +36,8 @@ public record Vector(int x,
    * The values of this instance remain untouched.
    * <p>
    * Simple description of the new {@link Vector}:
-   * new x <- this.x - given.x
-   * new y <- this.y - given.y
+   * new x &lt;- this.x - given.x
+   * new y &lt;- this.y - given.y
    *
    * @param vector which is to be subtracted.
    * @return new vector instance with subtracted values.

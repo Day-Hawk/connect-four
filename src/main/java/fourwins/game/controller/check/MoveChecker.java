@@ -53,6 +53,15 @@ public final class MoveChecker {
     this.column = column;
   }
 
+  /**
+   * Goes through all existing checks:
+   * - {@link MoveChecker#vertical()}
+   * - {@link MoveChecker#horizontal()}
+   * - {@link MoveChecker#diagonalLeft()}
+   * - {@link MoveChecker#diagonalRight()}
+   *
+   * @return true, if one check returns true.
+   */
   public boolean checkAll() {
     return this.vertical() ||
       this.horizontal() ||
@@ -63,7 +72,7 @@ public final class MoveChecker {
   /**
    * Checks if the line is met vertically in the column.
    *
-   * @return true if there is a row of four in the column.
+   * @return true, if there is a row of four in the column.
    */
   public boolean vertical() {
     boolean returnValue = false; //Value that is modified.
@@ -88,6 +97,11 @@ public final class MoveChecker {
     return returnValue; //Returns the value. If true the token has won.
   }
 
+  /**
+   * Checks if the line is met horizontally in the column.
+   *
+   * @return true, if there is a row of four in the row.
+   */
   public boolean horizontal() {
     boolean returnValue = false; //Value that is modified.
     final VectorLine verticalLines = new VectorLine(this.token); //Create a vector line that stores chains.
@@ -112,6 +126,11 @@ public final class MoveChecker {
     return returnValue;
   }
 
+  /**
+   * Verifies that diagonally in the rows of the change, four elements are. (From bottom left to top right).
+   *
+   * @return true if the above condition is met.
+   */
   public boolean diagonalLeft() {
     boolean returnValue = false; //Value that is modified.
     final VectorLine verticalLines = new VectorLine(this.token); //Create a vector line that stores chains.
@@ -140,6 +159,11 @@ public final class MoveChecker {
     return returnValue;
   }
 
+  /**
+   * Verifies that diagonally in the rows of the change, four elements are. (From bottom right to top left)
+   *
+   * @return true if the above condition is met.
+   */
   public boolean diagonalRight() {
     boolean returnValue = false; //Value that is modified.
     final VectorLine verticalLines = new VectorLine(this.token); //Create a vector line that stores chains.
@@ -169,7 +193,9 @@ public final class MoveChecker {
   }
 
   /**
-   * @param vectors
+   * Add the existing line to the com player if it consists of at least two elements.
+   *
+   * @param vectors which is to be added.
    */
   public void utilizeLines(final VectorLine vectors) {
     ObjectUtils.throwIfNull(vectors, "VectorLine object is null."); //Throw error if vectors is null.
