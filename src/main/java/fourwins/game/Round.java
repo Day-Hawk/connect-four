@@ -242,11 +242,11 @@ public final class Round {
 
     int rowIndex = -1; //Stores the selected row -> row also used as topArray.
     Token[] topArray = null; //This variable will hold the row on top of the column.
-    for (int i = this.rows(); i > 0; i--) { //Reverse loop through the rows of the pitch. (-> From bottom to top)
-      if (this.pitch[i - 1][columnIndex] != Token.EMPTY) { //Check if field at row with the given column is unused.
+    for (int i = this.rows() - 1; i >= 0; i--) { //Reverse loop through the rows of the pitch. (-> From bottom to top)
+      if (this.pitch[i][columnIndex] != Token.EMPTY) { //Check if field at row with the given column is unused.
         continue; //Go to next row.
       }
-      topArray = this.pitch[(rowIndex = i - 1)]; //Use row as topArray, because there is now value.
+      topArray = this.pitch[(rowIndex = i)]; //Use row as topArray, because there is now value.
       break; //Because topArray found.
     }
 
@@ -326,7 +326,7 @@ public final class Round {
    *
    * @param token could be null.
    */
-  private void end(Token token) {
+  private void end(final Token token) {
     this.gameState = GameState.END; //Set state as end.
     this.gameResult = token == null ? GameResult.DRAW /*If given token is null.*/ :
       token == Token.PLAYER /*Runs if token is present*/ ? GameResult.WON /*Token is player*/ :
