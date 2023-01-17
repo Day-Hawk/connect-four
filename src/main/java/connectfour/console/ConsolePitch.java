@@ -29,7 +29,7 @@ import connectfour.utils.ObjectUtils;
  * | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
  * </pre>
  */
-public class ConsolePitch {
+public final class ConsolePitch {
   /**
    * Round to create pitch {@link String} for.
    * Used information: {@link Round#pitch()}, {@link Round#rows()} ()}, {@link Round#columns()}.
