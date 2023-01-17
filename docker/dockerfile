@@ -1,0 +1,8 @@
+FROM eclipse-temurin:17.0.5_8-jre
+
+COPY ./connectFour.jar /home/connectfour/connectFour.jar
+WORKDIR /home/connectfour
+
+RUN chmod -Rv 7777 /home/connectfour/connectFour.jar
+
+CMD ["java", "-jar", "connectFour.jar"]
