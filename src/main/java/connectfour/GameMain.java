@@ -3,7 +3,7 @@ package connectfour;
 /**
  * Class which contains the main method of java.
  */
-public class GameMain {
+public final class GameMain {
   /**
    * Entry point.
    *
@@ -12,5 +12,12 @@ public class GameMain {
   public static void main(String[] args) {
     new GameEngine() //Create new GameEngine instance.
       .init(); //Initialize this instance.
+  }
+
+  /**
+   * Block constructor for other classes.
+   */
+  private GameMain() {
+    /*Nothing to see here.*/
   }
 }

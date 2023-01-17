@@ -4,7 +4,7 @@ package connectfour.game.exception;
  * This error is triggered when a field is selected that is outside the playing field.
  * Inherits from {@link RoundException}.
  */
-public class OutsideFieldException extends RoundException {
+public class OutsideFieldException extends Throwable {
   /**
    * Create new instance of an error with a message.
    *
