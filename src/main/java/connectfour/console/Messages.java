@@ -26,7 +26,7 @@ public interface Messages {
    */
   String WELCOME = """
 
-    Welcome to four wins.
+    Welcome to connect four.
     Draw the command window at least as large that the '=' strokes are displayed in one line.
     """;
 
@@ -45,11 +45,14 @@ public interface Messages {
    */
   String DESCRIPTION = """
 
-     Each player has 21 tiles of the same color. When a player drops a tile into a column,
-     it occupies the lowest free space in the column. The winner is the first player to line up four or
-     more of his pieces horizontally, vertically or diagonally.
+     Connect Four (also known as Connect 4, Four Up, Plot Four, Find Four, Captain's Mistress,
+     Four in a Row, Drop Four, and Gravitrips in the Soviet Union) is a two-player connection board game,
+     in which the players choose a color and then take turns dropping colored tokens into a seven-column,
+     six-row vertically suspended grid. The pieces fall straight down, occupying the lowest available space within the column.
+     The objective of the game is to be the first to form a horizontal, vertical, or diagonal line of four of one's own tokens.
+     Connect Four is a solved game. The first player can always win by playing the right moves.
 
-     (-> translated Source: https://de.wikipedia.org/wiki/Vier_gewinnt)
+     (-> source: https://en.wikipedia.org/wiki/Connect_Four)
 
     """;
 
