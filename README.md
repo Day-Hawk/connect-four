@@ -18,7 +18,7 @@ Use this start file:
 ```
 ----
 
-Or if docker is installed:
+🐳 If docker is installed:
 <br>
 Use this start file:
 ```
