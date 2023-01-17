@@ -20,7 +20,11 @@ Use this start file:
 
 🐳 If docker is installed:
 <br>
-Use this start file:
+Get the image with:
+```
+docker pull connectfour:<VERSION>
+```
+Execute the image with:
 ```
 docker run -i -t connectfour:<VERSION>
 ```
