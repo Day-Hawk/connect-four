@@ -4,7 +4,7 @@ package connectfour.game.exception;
  * Mother class of the error messages of the software.
  * Inherits from {@link Exception}.
  */
-public class RoundException extends Exception {
+public class RoundException extends Throwable {
   /**
    * Create new instance of an error with a message.
    *
