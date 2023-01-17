@@ -129,10 +129,11 @@ public class GameEngine {
    */
   public void reset() {
     System.out.print(Messages.ASK_RESET); //Ask for reset.
-    if (this.consoleInput.awaitBoolean(aBoolean -> aBoolean, /*Checks if player types 'true' Otherwise wait.*/
-      aBoolean -> Messages.ASK_RESET /*Reprint reset question. If not true.*/)) {
+    if (this.consoleInput.awaitBoolean(null, /* means that both values are used.*/null)) {
       System.out.println("\n".repeat(5));
       this.fieldSize();
+    } else {
+      Runtime.getRuntime().exit(0);
     }
   }
 

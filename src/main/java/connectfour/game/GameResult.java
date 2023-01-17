@@ -8,6 +8,7 @@ public enum GameResult {
    * If the player has won.
    */
   WON("""
+
     WWWWWWWW                           WWWWWWWW     OOOOOOOOO     NNNNNNNN        NNNNNNNN
     W::::::W                           W::::::W   OO:::::::::OO   N:::::::N       N::::::N
     W::::::W                           W::::::W OO:::::::::::::OO N::::::::N      N::::::N
@@ -30,6 +31,7 @@ public enum GameResult {
    * If the player has lost.
    */
   LOST("""
+
     LLLLLLLLLLL                                                        tttt
     L:::::::::L                                                     ttt:::t
     L:::::::::L                                                     t:::::t
@@ -52,6 +54,7 @@ public enum GameResult {
    * If it is a draw.
    */
   DRAW("""
+
     DDDDDDDDDDDDD
     D::::::::::::DDD
     D:::::::::::::::DD
