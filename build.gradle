@@ -14,7 +14,7 @@ tasks.withType(JavaCompile) {
 
 jar {
   manifest {
-    attributes "Main-Class": "fourwins.GameMain"
+    attributes "Main-Class": "connectFour.GameMain"
   }
   baseName "connectFour"
 }

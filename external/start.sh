@@ -1,2 +1,2 @@
-java -jar "./fourWins.jar"
+java -jar "./connectFour.jar"
 pause
