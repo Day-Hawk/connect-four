@@ -22,11 +22,11 @@ Use this start file:
 <br>
 Get the image with:
 ```
-docker pull connectfour:<VERSION>
+docker pull ghcr.io/day-hawk/connectfour:<VERSION>
 ```
 Execute the image with:
 ```
-docker run -i -t connectfour:<VERSION>
+docker run -i -t ghcr.io/day-hawk/connectfour:<VERSION>
 ```
 <br>
 In order to guarantee the input the following tags must be set at the start:
