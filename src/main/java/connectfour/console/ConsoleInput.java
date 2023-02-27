@@ -63,7 +63,7 @@ public final class ConsoleInput {
       }
 
       if (!testInput.test(textInput) /*Tests the input if true valid.*/) {
-        System.out.println("Invalid int input.");
+        System.out.println("Invalid input.");
         continue; //Wait for next input, goto start of while.
       }
 
