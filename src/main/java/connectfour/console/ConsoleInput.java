@@ -55,7 +55,9 @@ public final class ConsoleInput {
         textInput = this.scanner.next(); //textInput is the entered value of the user.
       } catch (Exception exception) {
         textInput = "";
+        System.out.println("\n");
         System.out.println("An error has occurred with the scanner. If you started the application as a container check if the tags '-i'(Keep STDIN open even if not attached) and '-t'(Allocate a pseudo-TTY) are present.");
+        System.out.println("\n");
         System.exit(0);
       }
 
