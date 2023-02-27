@@ -55,9 +55,10 @@ public final class ConsoleInput {
         textInput = this.scanner.next(); //textInput is the entered value of the user.
       } catch (Exception exception) {
         textInput = "";
-        System.out.println("\n");
-        System.out.println("An error has occurred with the scanner. If you started the application as a container check if the tags '-i'(Keep STDIN open even if not attached) and '-t'(Allocate a pseudo-TTY) are present.");
-        System.out.println("\n");
+        System.out.println();
+        System.out.println("An error has occurred with the scanner.");
+        System.out.println("If you started the application as a container check if the tags '-i'(Keep STDIN open even if not attached) and '-t'(Allocate a pseudo-TTY) are present.");
+        System.out.println();
         System.exit(0);
       }
 
@@ -110,7 +111,6 @@ public final class ConsoleInput {
       s -> valueMap.get(s.toLowerCase()) /*Returns the value of the valueMap input.*/,
       booleanPredicate,
       message);
-    //Todo:
   }
 
   /**
