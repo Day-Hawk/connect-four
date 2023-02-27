@@ -1,4 +1,4 @@
-Four wins against the computer
+Connect four against the computer
 ====
 ----
 
